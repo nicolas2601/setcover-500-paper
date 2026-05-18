@@ -1,0 +1,115 @@
+@import "tailwindcss";
+
+@theme {
+  --color-ink: oklch(0.18 0.013 80);
+  --color-ink-soft: oklch(0.32 0.012 80);
+  --color-ink-faint: oklch(0.58 0.010 80);
+  --color-cream: oklch(0.985 0.007 85);
+  --color-paper: oklch(0.972 0.010 85);
+  --color-surface: oklch(0.945 0.013 82);
+  --color-hairline: oklch(0.88 0.012 80);
+  --color-accent: oklch(0.55 0.16 240);
+  --color-accent-soft: oklch(0.92 0.05 240);
+  --color-warning: oklch(0.72 0.16 60);
+  --color-success: oklch(0.58 0.14 155);
+
+  --font-display: var(--font-fraunces);
+  --font-body: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+
+  --ease-apple: cubic-bezier(0.32, 0.72, 0, 1);
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-quart: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  --tracking-display: -0.04em;
+  --tracking-eyebrow: 0.22em;
+}
+
+:root {
+  --background: var(--color-cream);
+  --foreground: var(--color-ink);
+  color-scheme: light;
+}
+
+html {
+  height: 100%;
+  font-feature-settings: "ss01", "ss02", "cv11";
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-body), ui-sans-serif, system-ui;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow-x: hidden;
+}
+
+::selection {
+  background: var(--color-ink);
+  color: var(--color-cream);
+}
+
+.font-display {
+  font-family: var(--font-display), Georgia, serif;
+  font-feature-settings: "ss01", "ss02", "salt";
+  letter-spacing: var(--tracking-display);
+}
+
+.font-mono {
+  font-family: var(--font-mono), ui-monospace, monospace;
+  font-feature-settings: "tnum", "ss01";
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* KaTeX overrides for editorial look */
+.katex {
+  font-size: 1.15em;
+  color: var(--color-ink);
+}
+
+/* Custom utility: noise grain */
+.bg-grain {
+  background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+}
+
+/* Scrollytelling progress bar */
+.progress-track {
+  background: linear-gradient(
+    to right,
+    var(--color-accent) var(--progress, 0%),
+    transparent var(--progress, 0%)
+  );
+}
