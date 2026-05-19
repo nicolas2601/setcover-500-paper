@@ -197,7 +197,7 @@ function BranchTree() {
       ref={svgRef}
       viewBox="0 0 1200 640"
       preserveAspectRatio="xMidYMid meet"
-      className="h-auto w-full [mask-image:radial-gradient(ellipse_75%_85%_at_50%_50%,_oklch(0_0_0)_55%,_oklch(0_0_0_/_0.55)_100%)]"
+      className="mx-auto block h-auto w-full max-w-[1280px] [mask-image:radial-gradient(ellipse_75%_85%_at_50%_50%,_oklch(0_0_0)_55%,_oklch(0_0_0_/_0.55)_100%)]"
       role="img"
       aria-label="Árbol Branch and Bound del solver"
     >
@@ -758,7 +758,7 @@ export function ExactMethod() {
           scrollTrigger: {
             trigger: section,
             start: 'top top',
-            end: '+=280%',
+            end: '+=180%',
             scrub: 1,
             pin: true,
             anticipatePin: 1,
@@ -880,16 +880,20 @@ export function ExactMethod() {
           CAPÍTULO 04 · MÉTODO EXACTO · PROGRAMACIÓN LINEAL ENTERA
         </div>
 
+        {/* Intro band — headline + body + lectura matemática en una sola fila editorial,
+            para que el árbol pueda ocupar toda la fila siguiente full-width. */}
         <div className="mt-12 grid grid-cols-12 gap-8 md:gap-12">
-          <div className="col-span-12 md:col-span-5">
+          <div className="col-span-12 md:col-span-7 lg:col-span-8">
             <SplitReveal
               as="h2"
-              className="font-display text-ink text-[clamp(2rem,4.4vw,3.6rem)] font-medium leading-[1.05]"
+              className="font-display text-ink text-[clamp(2rem,4.8vw,4.4rem)] font-medium leading-[1.02]"
             >
               {`Diez minutos. Veintidós mil nodos. La mejor solución entera que MATLAB pudo certificar.`}
             </SplitReveal>
+          </div>
 
-            <div className="text-ink-soft mt-8 max-w-md space-y-5 text-[15px] leading-relaxed md:text-base">
+          <div className="col-span-12 md:col-span-5 lg:col-span-4">
+            <div className="text-ink-soft space-y-5 text-[15px] leading-relaxed md:text-base">
               <p>
                 MATLAB <span className="font-mono">intlinprog</span> ataca el problema con
                 Branch and Bound. Relaja la integralidad, resuelve el LP, ramifica sobre la
@@ -903,7 +907,7 @@ export function ExactMethod() {
               </p>
             </div>
 
-            <div className="border-hairline mt-10 border-t pt-6">
+            <div className="border-hairline mt-8 border-t pt-5">
               <div className="text-ink-faint font-mono text-[10px] uppercase tracking-[0.22em]">
                 Lectura matemática
               </div>
@@ -912,12 +916,15 @@ export function ExactMethod() {
               </p>
             </div>
           </div>
+        </div>
 
-          <div className="col-span-12 md:col-span-7">
-            <div
-              ref={treeContainerRef}
-              className="bg-paper ring-hairline relative overflow-hidden rounded-[2rem] p-6 ring-1 shadow-[inset_0_1px_1px_rgba(10,9,8,0.04),0_1px_0_oklch(1_0_0/0.6)] md:p-10"
-            >
+        {/* Tree card — FULL WIDTH, agarrá todo el ancho disponible para que el árbol
+            se lea cómodamente. Sin sangría lateral extra adentro del scene. */}
+        <div className="mt-12 md:mt-16">
+          <div
+            ref={treeContainerRef}
+            className="bg-paper ring-hairline relative overflow-hidden rounded-[2rem] p-6 ring-1 shadow-[inset_0_1px_1px_rgba(10,9,8,0.04),0_1px_0_oklch(1_0_0/0.6)] md:p-10 lg:p-12"
+          >
               {/* Inner-eyebrow card — telemetry tag + inline legend so the
                   reader knows what dot means what before scanning the tree. */}
               <div className="border-hairline mb-7 flex flex-col gap-4 border-b pb-5">
@@ -963,75 +970,82 @@ export function ExactMethod() {
                 </div>
               </div>
 
-              {/* Tree + lectura panel — 2-col on md+, stacked on sm */}
-              <div className="flex flex-col gap-6 md:flex-row md:items-start md:gap-8">
-                <div className="min-w-0 flex-1">
-                  <BranchTree />
-                </div>
+              {/* Tree — full width hero. Lectura panel se mueve abajo como banda
+                  horizontal para que el árbol respire y se lea mucho mejor. */}
+              <div className="min-h-[420px] sm:min-h-[520px] md:min-h-[640px] lg:min-h-[760px] xl:min-h-[820px]">
+                <BranchTree />
+              </div>
 
-                <aside
-                  className="bg-cream/60 ring-hairline w-full flex-shrink-0 rounded-[1.25rem] p-5 ring-1 md:w-72 md:p-6"
-                  aria-label="Cómo leer el árbol Branch and Bound"
-                >
-                  <div className="text-accent font-mono text-[10px] uppercase tracking-[0.22em]">
-                    Lectura del árbol
+              <aside
+                className="bg-cream/60 ring-hairline mt-10 w-full rounded-[1.5rem] p-6 ring-1 md:mt-12 md:p-8 lg:p-10"
+                aria-label="Cómo leer el árbol Branch and Bound"
+              >
+                <div className="flex flex-col gap-6 border-b border-hairline pb-6 md:flex-row md:items-end md:justify-between md:gap-10">
+                  <div>
+                    <div className="text-accent font-mono text-[11px] uppercase tracking-[0.22em]">
+                      Lectura del árbol
+                    </div>
+                    <p className="text-ink mt-3 max-w-2xl text-[15px] leading-relaxed md:text-[17px]">
+                      Cómo se lee el diagrama: cuatro pasos del Branch and Bound que aplicamos
+                      sobre el modelo de cobertura.
+                    </p>
                   </div>
-                  <ol className="text-ink-soft mt-5 space-y-4 text-sm leading-relaxed">
-                    <li className="flex gap-3">
-                      <span className="text-accent font-mono tnum mt-0.5 text-[11px] font-semibold tracking-[0.04em]">
-                        01
-                      </span>
-                      <span>
-                        Resolvemos el <span className="font-mono">LP</span> relajado en cada
-                        nodo. Esa es la <em className="text-ink not-italic">cota inferior</em> de
-                        costo.
-                      </span>
-                    </li>
-                    <li className="flex gap-3">
-                      <span className="text-accent font-mono tnum mt-0.5 text-[11px] font-semibold tracking-[0.04em]">
-                        02
-                      </span>
-                      <span>
-                        Si la solución es fraccional, ramificamos en{' '}
-                        <span className="font-mono">x</span><sub className="font-mono">j</sub>{' '}
-                        <span className="font-mono">= 0 / 1</span>.
-                      </span>
-                    </li>
-                    <li className="flex gap-3">
-                      <span className="text-accent font-mono tnum mt-0.5 text-[11px] font-semibold tracking-[0.04em]">
-                        03
-                      </span>
-                      <span>
-                        Podamos toda rama cuya cota no pueda mejorar la mejor entera actual.
-                      </span>
-                    </li>
-                    <li className="flex gap-3">
-                      <span className="text-accent font-mono tnum mt-0.5 text-[11px] font-semibold tracking-[0.04em]">
-                        04
-                      </span>
-                      <span>
-                        Continuamos hasta agotar nodos o el presupuesto de tiempo.
-                      </span>
-                    </li>
-                  </ol>
-                  <div className="border-hairline mt-6 border-t pt-5">
-                    <div className="text-ink-faint font-mono text-[9px] uppercase tracking-[0.22em]">
+                  <div className="text-right md:text-right">
+                    <div className="text-ink-faint font-mono text-[10px] uppercase tracking-[0.22em]">
                       En esta corrida
                     </div>
-                    <p className="text-ink-soft mt-3 text-[13px] leading-relaxed">
-                      <span className="tnum font-mono">22,632</span> nodos en{' '}
-                      <span className="tnum font-mono">600s</span>. Mejor entera{' '}
-                      <span className="text-accent tnum font-mono font-semibold">
+                    <p className="text-ink-soft mt-3 text-[14px] leading-relaxed md:text-[15px]">
+                      <span className="tnum font-mono font-semibold">22,632</span> nodos en{' '}
+                      <span className="tnum font-mono font-semibold">600s</span>. Mejor entera{' '}
+                      <span className="text-accent tnum font-display text-xl font-semibold md:text-2xl">
                         $49,988
                       </span>{' '}
                       <span className="text-ink-faint">(no certificada óptima).</span>
                     </p>
                   </div>
-                </aside>
-              </div>
+                </div>
+                <ol className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 md:gap-8 lg:grid-cols-4">
+                  <li className="relative">
+                    <span className="text-accent font-mono tnum text-[24px] font-semibold tracking-[0.04em] md:text-[28px]">
+                      01
+                    </span>
+                    <p className="text-ink-soft mt-3 text-[15px] leading-relaxed md:text-[16px]">
+                      Resolvemos el <span className="font-mono">LP</span> relajado en cada nodo.
+                      Esa es la <em className="text-ink not-italic">cota inferior</em> de costo.
+                    </p>
+                  </li>
+                  <li className="relative">
+                    <span className="text-accent font-mono tnum text-[24px] font-semibold tracking-[0.04em] md:text-[28px]">
+                      02
+                    </span>
+                    <p className="text-ink-soft mt-3 text-[15px] leading-relaxed md:text-[16px]">
+                      Si la solución es fraccional, ramificamos en{' '}
+                      <span className="font-mono">x</span>
+                      <sub className="font-mono">j</sub>{' '}
+                      <span className="font-mono">= 0 / 1</span>.
+                    </p>
+                  </li>
+                  <li className="relative">
+                    <span className="text-accent font-mono tnum text-[24px] font-semibold tracking-[0.04em] md:text-[28px]">
+                      03
+                    </span>
+                    <p className="text-ink-soft mt-3 text-[15px] leading-relaxed md:text-[16px]">
+                      Podamos toda rama cuya cota no pueda mejorar la mejor entera actual.
+                    </p>
+                  </li>
+                  <li className="relative">
+                    <span className="text-accent font-mono tnum text-[24px] font-semibold tracking-[0.04em] md:text-[28px]">
+                      04
+                    </span>
+                    <p className="text-ink-soft mt-3 text-[15px] leading-relaxed md:text-[16px]">
+                      Continuamos hasta agotar nodos o el presupuesto de tiempo.
+                    </p>
+                  </li>
+                </ol>
+              </aside>
             </div>
           </div>
-        </div>
+        {/* /tree wrapper */}
 
         <div className="mt-20 grid grid-cols-2 gap-4 md:grid-cols-3 md:gap-6">
           <Metric eyebrow="Status" value="IntegerFeasible" caption="no certificado óptimo" />

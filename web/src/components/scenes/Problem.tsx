@@ -119,7 +119,7 @@ export function Problem() {
         scrollTrigger: {
           trigger: section,
           start: 'top top',
-          end: '+=240%',
+          end: '+=140%',
           scrub: 1,
           pin: true,
           anticipatePin: 1,

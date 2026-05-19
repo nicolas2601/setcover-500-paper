@@ -164,7 +164,7 @@ function ConvergenceChart({ scrubTriggerRef }: ChartProps) {
         scrollTrigger: {
           trigger,
           start: 'top top',
-          end: '+=260%',
+          end: '+=160%',
           scrub: 1,
           pin: true,
           anticipatePin: 1,

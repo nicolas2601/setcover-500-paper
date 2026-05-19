@@ -382,7 +382,7 @@ function GAPanel({ step, index, total }: PanelProps) {
         scrollTrigger: {
           trigger: panel,
           start: 'top top',
-          end: '+=70%',
+          end: '+=45%',
           pin: true,
           pinSpacing: true,
           scrub: 0.6,
@@ -449,7 +449,7 @@ function GAPanel({ step, index, total }: PanelProps) {
           scrollTrigger: {
             trigger: panel,
             start: 'top top',
-            end: '+=70%',
+            end: '+=45%',
             scrub: 0.8,
           },
           onUpdate: () => {
