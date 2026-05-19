@@ -32,21 +32,21 @@ export function Robustness() {
     <section
       data-scene="08"
       aria-label="Capítulo 08 · Robustez · 5 semillas"
-      className="bg-paper py-32 md:py-40"
+      className="bg-paper py-24 sm:py-28 md:py-40"
     >
-      <div className="mx-auto max-w-[1680px] px-8 md:px-16 xl:px-24">
-        <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">
+      <div className="mx-auto max-w-[1680px] px-5 sm:px-8 md:px-16 xl:px-24">
+        <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-faint md:text-[12px]">
           CAPÍTULO 08 · ROBUSTEZ
         </p>
 
         <SplitReveal
           as="h2"
-          className="mt-8 max-w-4xl font-display text-5xl leading-[0.95] text-ink md:text-7xl"
+          className="mt-8 max-w-4xl font-display text-[clamp(2.25rem,7vw,4.5rem)] leading-[0.95] text-ink md:text-7xl"
         >
           Cinco semillas. CV de 0.46%. El GA es estable.
         </SplitReveal>
 
-        <div className="mt-10 max-w-2xl space-y-4 text-lg leading-relaxed text-ink-soft md:text-xl">
+        <div className="mt-8 max-w-2xl space-y-4 text-base leading-relaxed text-ink-soft sm:mt-10 sm:text-lg md:text-xl">
           <p>
             Ejecutamos el mismo GA cinco veces, cambiando solo la semilla aleatoria. Mismo
             instance, mismos hiperparámetros, distintos puntos de partida en la búsqueda.
@@ -58,33 +58,33 @@ export function Robustness() {
         </div>
 
         {/* Dot plot */}
-        <div className="mt-20 rounded-[1.5rem] ring-1 ring-hairline bg-cream p-8 md:p-12">
+        <div className="mt-14 rounded-[1.25rem] ring-1 ring-hairline bg-cream p-5 sm:mt-20 sm:p-8 md:rounded-[1.5rem] md:p-12">
           <div className="flex flex-wrap items-baseline justify-between gap-3">
-            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">
+            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-faint md:text-[12px]">
               Distribución · 5 semillas · gap vs PLE-ILP
             </p>
             <p
               data-robustness-delta
-              className="font-mono tnum text-[10px] uppercase tracking-[0.22em] text-ink-faint"
+              className="font-mono tnum text-[11px] uppercase tracking-[0.22em] text-ink-faint md:text-[12px]"
             >
-              Δ entre best (${formatNumber(50253)}) y worst (${formatNumber(50795)}) ={' '}
-              ${formatNumber(542)} · {formatNumber(0.55, 2)} puntos %
+              Δ best (${formatNumber(50253)}) ↔ worst (${formatNumber(50795)}) ={' '}
+              ${formatNumber(542)} · {formatNumber(0.55, 2)} pp
             </p>
           </div>
-          <div className="mt-8">
+          <div className="mt-6 sm:mt-8">
             <DotPlot />
           </div>
-          <div className="mt-2 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint tnum">
+          <div className="mt-2 flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.22em] text-ink-faint tnum md:text-[12px]">
             <span>0.0 %</span>
-            <span>0.5 %</span>
+            <span className="hidden sm:inline">0.5 %</span>
             <span>1.0 %</span>
-            <span>1.5 %</span>
+            <span className="hidden sm:inline">1.5 %</span>
             <span>2.0 %</span>
           </div>
         </div>
 
         {/* Stat blocks */}
-        <div className="mt-16 grid grid-cols-12 gap-6">
+        <div className="mt-12 grid grid-cols-12 gap-4 sm:mt-16 sm:gap-6">
           <StatCard
             label="Media μ"
             value={formatMoney(robustness.media)}
@@ -104,7 +104,7 @@ export function Robustness() {
         </div>
 
         {/* One-liner — plain-language wrap-up after all the numbers */}
-        <p className="mt-16 max-w-3xl font-display text-2xl leading-snug text-ink md:text-3xl">
+        <p className="mt-14 max-w-3xl font-display text-xl leading-snug text-ink sm:mt-16 sm:text-2xl md:text-3xl xl:text-4xl">
           El coeficiente de variación es {formatNumber(robustness.cv, 2)} %. En lenguaje plano: si
           volvés a correr el GA, la respuesta apenas se mueve.
         </p>
@@ -227,12 +227,12 @@ function DotPlot() {
         strokeWidth={1.5}
       />
       <text
-        x={ilpX + 8}
+        x={ilpX + 10}
         y={padY}
         className="fill-ink font-mono"
-        fontSize={11}
-        fontWeight={600}
-        letterSpacing="0.15em"
+        fontSize={14}
+        fontWeight={700}
+        letterSpacing="0.12em"
       >
         PLE · ILP $49,988
       </text>
@@ -286,20 +286,20 @@ function DotPlot() {
               opacity={0.15}
             />
             <text
-              x={x + 22}
-              y={y - 4}
+              x={x + 24}
+              y={y - 5}
               className={cn('font-mono', textClass)}
-              fontSize={12}
-              fontWeight={600}
-              letterSpacing="0.05em"
+              fontSize={14}
+              fontWeight={700}
+              letterSpacing="0.04em"
             >
               {s.id} · seed {s.seed}
             </text>
             <text
-              x={x + 22}
-              y={y + 12}
+              x={x + 24}
+              y={y + 14}
               className="fill-ink-faint font-mono tnum"
-              fontSize={11}
+              fontSize={13}
             >
               ${formatNumber(s.costo)} · +{formatNumber(s.gap, 2)}%
             </text>
@@ -325,17 +325,17 @@ function StatCard({
   // headline finding of the scene; the other two stay flat single-surface.
   if (accent) {
     return (
-      <div className="col-span-12 rounded-[1.5rem] bg-accent-soft p-1.5 ring-1 ring-accent/40 md:col-span-4">
-        <div className="rounded-[calc(1.5rem-0.375rem)] bg-accent-soft px-8 py-7 shadow-[inset_0_1px_1px_rgba(255,255,255,0.18)]">
-          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">
+      <div className="col-span-12 rounded-[1.25rem] bg-accent-soft p-2 ring-2 ring-accent/40 md:col-span-4 md:rounded-[1.5rem]">
+        <div className="rounded-[calc(1.25rem-0.5rem)] bg-accent-soft px-6 py-6 ring-1 ring-accent/30 shadow-[inset_0_1px_1px_rgba(255,255,255,0.2)] sm:px-8 sm:py-7 md:rounded-[calc(1.5rem-0.5rem)]">
+          <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-faint md:text-[12px]">
             {label}
           </p>
-          <p className="mt-6 font-display tnum text-accent text-5xl leading-none md:text-7xl">
+          <p className="mt-5 font-display tnum text-accent text-5xl leading-[0.95] md:text-6xl xl:text-7xl">
             {value}
           </p>
-          <p className="mt-4 text-sm leading-relaxed text-ink-soft">{sub}</p>
+          <p className="mt-4 text-sm leading-relaxed text-ink-soft md:text-base">{sub}</p>
           <CvSparkline />
-          <p className="mt-3 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">
+          <p className="mt-3 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-faint md:text-[12px]">
             vs PLE · {formatNumber(exact.gapResidual, 3)}% residual
           </p>
         </div>
@@ -344,12 +344,12 @@ function StatCard({
   }
 
   return (
-    <div className="col-span-12 rounded-[1.5rem] bg-cream p-8 ring-1 ring-hairline md:col-span-4">
-      <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">{label}</p>
-      <p className="mt-6 font-display tnum text-5xl leading-none text-ink md:text-6xl">
+    <div className="col-span-12 rounded-[1.25rem] bg-cream p-6 ring-1 ring-hairline sm:p-8 md:col-span-4 md:rounded-[1.5rem]">
+      <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-faint md:text-[12px]">{label}</p>
+      <p className="mt-5 font-display tnum text-4xl leading-[0.95] text-ink md:text-5xl xl:text-6xl">
         {value}
       </p>
-      <p className="mt-4 text-sm leading-relaxed text-ink-soft">{sub}</p>
+      <p className="mt-4 text-sm leading-relaxed text-ink-soft md:text-base">{sub}</p>
     </div>
   );
 }

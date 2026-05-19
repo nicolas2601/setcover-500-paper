@@ -333,8 +333,8 @@ function BranchTree() {
           const d = `M ${from.x} ${startY} C ${from.x} ${cp1y}, ${to.x} ${cp2y}, ${to.x} ${endY}`;
 
           const className = e.pruned
-            ? 'stroke-ink-faint stroke-[1]'
-            : 'stroke-ink stroke-[1.6]';
+            ? 'stroke-ink-faint stroke-[1.25]'
+            : 'stroke-ink stroke-[2]';
 
           // Midpoint for the optional decision label (slight x offset toward parent
           // so the text doesn't collide with the curve apex).
@@ -351,29 +351,30 @@ function BranchTree() {
                 fill="none"
                 className={className}
                 strokeLinecap="round"
-                strokeDasharray={e.pruned ? '3 4' : undefined}
-                opacity={e.pruned ? 0.55 : 1}
+                strokeDasharray={e.pruned ? '4 5' : undefined}
+                opacity={e.pruned ? 0.45 : 1}
               />
               {e.decision ? (
                 <g data-edge-decision={e.id} data-pruned={e.pruned ? 'true' : 'false'}>
                   <rect
-                    x={labelX - 28}
-                    y={labelY - 8}
-                    width={56}
-                    height={14}
-                    rx={7}
-                    className="fill-paper"
+                    x={labelX - 34}
+                    y={labelY - 10}
+                    width={68}
+                    height={18}
+                    rx={9}
+                    className="fill-cream"
                     stroke="currentColor"
-                    strokeWidth={0.6}
-                    strokeOpacity={0.15}
+                    strokeWidth={1}
+                    strokeOpacity={0.22}
                   />
                   <text
                     x={labelX}
-                    y={labelY + 2}
+                    y={labelY + 3}
                     textAnchor="middle"
-                    className="fill-ink-faint font-mono"
-                    fontSize={7}
-                    letterSpacing="0.14em"
+                    className="fill-ink font-mono"
+                    fontSize={10}
+                    fontWeight={500}
+                    letterSpacing="0.1em"
                   >
                     {e.decision}
                   </text>
@@ -383,6 +384,69 @@ function BranchTree() {
           );
         })}
 
+      {/* Winning path overlay — root → b → b1 → b1a → L3 (best leaf).
+          Rendered AFTER all edges but BEFORE nodes so the accent stroke sits
+          above the regular curves but under the dot markers. */}
+      {(() => {
+        const path = ['r', 'b', 'b1', 'b1a', 'L3'].map(nodeById);
+        const segments: string[] = [];
+        for (let i = 0; i < path.length - 1; i++) {
+          const from = path[i];
+          const to = path[i + 1];
+          const startY = from.y + 12;
+          const endY = to.y - 12;
+          const midY = (startY + endY) / 2;
+          const cp1y = midY - 10;
+          const cp2y = midY + 10;
+          segments.push(
+            `M ${from.x} ${startY} C ${from.x} ${cp1y}, ${to.x} ${cp2y}, ${to.x} ${endY}`,
+          );
+        }
+        return (
+          <g data-winning-path className="text-accent" aria-hidden>
+            {segments.map((d, idx) => (
+              <path
+                key={`win-${idx}`}
+                data-winning-path-segment={idx}
+                d={d}
+                fill="none"
+                stroke="currentColor"
+                strokeWidth={3}
+                strokeOpacity={0.6}
+                strokeLinecap="round"
+              />
+            ))}
+            {/* Mini badge anchored near the best leaf */}
+            <g data-winning-path-badge transform={`translate(${nodeById('L3').x + 78} ${nodeById('L3').y - 4})`}>
+              <rect
+                x={-46}
+                y={-7}
+                width={92}
+                height={14}
+                rx={7}
+                fill="currentColor"
+                fillOpacity={0.12}
+                stroke="currentColor"
+                strokeOpacity={0.45}
+                strokeWidth={0.8}
+              />
+              <text
+                x={0}
+                y={3}
+                textAnchor="middle"
+                fill="currentColor"
+                className="font-mono"
+                fontSize={8}
+                fontWeight={600}
+                letterSpacing="0.22em"
+              >
+                RUTA GANADORA
+              </text>
+            </g>
+          </g>
+        );
+      })()}
+
       {/* Nodes — sized & styled per kind */}
       {NODES.map((n) => {
         const isRoot = n.kind === 'root';
@@ -390,7 +454,7 @@ function BranchTree() {
         const isPruned = n.kind === 'pruned';
         const isWorstLeaf = n.id === worst.id;
 
-        const radius = isRoot ? 12 : isBest ? 10 : isWorstLeaf ? 8 : isPruned ? 5 : 7;
+        const radius = isRoot ? 14 : isBest ? 14 : isWorstLeaf ? 11 : isPruned ? 6 : 9;
         const fillClass = isBest
           ? 'fill-accent'
           : isWorstLeaf
@@ -403,7 +467,7 @@ function BranchTree() {
           : isWorstLeaf
             ? 'stroke-warning'
             : isPruned
-              ? 'stroke-ink-faint/60'
+              ? 'stroke-ink-faint'
               : 'stroke-ink';
 
         return (
@@ -413,9 +477,9 @@ function BranchTree() {
               <circle
                 cx={n.x}
                 cy={n.y}
-                r={20}
+                r={28}
                 className="fill-ink"
-                opacity={0.06}
+                opacity={0.1}
               />
             ) : null}
             <circle
@@ -425,29 +489,29 @@ function BranchTree() {
               cx={n.x}
               cy={n.y}
               r={radius}
-              strokeWidth={isPruned ? 1 : 1.4}
+              strokeWidth={isPruned ? 1.5 : 1.4}
               className={cn(fillClass, strokeClass)}
             />
             {/* Inner "X" cross over the worst leaf — signals "abandoned branch" */}
             {isWorstLeaf ? (
               <g data-worst-cross aria-hidden>
                 <line
-                  x1={n.x - 3.2}
-                  y1={n.y - 3.2}
-                  x2={n.x + 3.2}
-                  y2={n.y + 3.2}
+                  x1={n.x - 4}
+                  y1={n.y - 4}
+                  x2={n.x + 4}
+                  y2={n.y + 4}
                   stroke="currentColor"
-                  strokeWidth={1.2}
+                  strokeWidth={2.5}
                   strokeLinecap="round"
                   className="text-cream"
                 />
                 <line
-                  x1={n.x + 3.2}
-                  y1={n.y - 3.2}
-                  x2={n.x - 3.2}
-                  y2={n.y + 3.2}
+                  x1={n.x + 4}
+                  y1={n.y - 4}
+                  x2={n.x - 4}
+                  y2={n.y + 4}
                   stroke="currentColor"
-                  strokeWidth={1.2}
+                  strokeWidth={2.5}
                   strokeLinecap="round"
                   className="text-cream"
                 />
@@ -456,9 +520,9 @@ function BranchTree() {
             {/* Inner highlight dot on the best leaf for that pearl quality */}
             {isBest ? (
               <circle
-                cx={n.x - 2}
-                cy={n.y - 2.5}
-                r={1.6}
+                cx={n.x - 3}
+                cy={n.y - 3.5}
+                r={2.2}
                 className="fill-cream"
                 opacity={0.85}
               />
@@ -488,10 +552,11 @@ function BranchTree() {
               <>
                 <text
                   x={n.x}
-                  y={labelY - 14}
+                  y={labelY - 18}
                   textAnchor="middle"
                   className="fill-ink-faint font-mono uppercase"
-                  fontSize={9}
+                  fontSize={11}
+                  fontWeight={500}
                   letterSpacing="0.22em"
                 >
                   LP relajada · cota inicial
@@ -501,8 +566,8 @@ function BranchTree() {
                   y={labelY}
                   textAnchor="middle"
                   className="fill-ink font-mono tnum"
-                  fontSize={11}
-                  fontWeight={600}
+                  fontSize={14}
+                  fontWeight={700}
                   letterSpacing="0.04em"
                 >
                   {n.label}
@@ -515,21 +580,22 @@ function BranchTree() {
               <>
                 <text
                   x={n.x}
-                  y={labelY + 4}
+                  y={labelY + 8}
                   textAnchor="middle"
                   className="fill-accent font-display tnum"
-                  fontSize={20}
-                  fontWeight={500}
+                  fontSize={28}
+                  fontWeight={600}
                   letterSpacing="-0.01em"
                 >
                   {n.label}
                 </text>
                 <text
                   x={n.x}
-                  y={labelY + 20}
+                  y={labelY + 26}
                   textAnchor="middle"
                   className="fill-accent font-mono uppercase"
-                  fontSize={8}
+                  fontSize={10}
+                  fontWeight={600}
                   letterSpacing="0.24em"
                 >
                   mejor entera · IntegerFeasible
@@ -542,42 +608,43 @@ function BranchTree() {
               <>
                 <text
                   x={n.x}
-                  y={labelY}
+                  y={labelY + 2}
                   textAnchor="middle"
                   className="fill-warning font-mono tnum"
-                  fontSize={10}
-                  fontWeight={600}
+                  fontSize={13}
+                  fontWeight={700}
                   letterSpacing="0.02em"
                 >
                   {n.label}
                 </text>
                 <text
                   x={n.x}
-                  y={labelY + 14}
+                  y={labelY + 18}
                   textAnchor="middle"
                   className="fill-warning font-mono uppercase"
-                  fontSize={7}
+                  fontSize={9}
+                  fontWeight={600}
                   letterSpacing="0.22em"
-                  opacity={0.9}
+                  opacity={0.95}
                 >
                   peor explorada · podada
                 </text>
               </>
             ) : null}
 
-            {/* Every other node — discreet 8px mono cost */}
+            {/* Every other node — readable 11px mono cost (13px for active) */}
             {!isRoot && !isBest && !isWorstLeaf ? (
               <text
                 x={n.x}
-                y={labelY - 6}
+                y={labelY - 4}
                 textAnchor="middle"
                 className={cn(
                   'tnum font-mono',
                   isPruned ? 'fill-ink-faint' : 'fill-ink',
                 )}
-                fontSize={8}
-                fontWeight={isPruned ? 400 : 500}
-                opacity={isPruned ? 0.7 : 1}
+                fontSize={isPruned ? 11 : 13}
+                fontWeight={isPruned ? 500 : 600}
+                opacity={isPruned ? 0.75 : 1}
                 letterSpacing="0.02em"
               >
                 {n.label}
@@ -851,60 +918,116 @@ export function ExactMethod() {
               ref={treeContainerRef}
               className="bg-paper ring-hairline relative overflow-hidden rounded-[2rem] p-6 ring-1 shadow-[inset_0_1px_1px_rgba(10,9,8,0.04),0_1px_0_oklch(1_0_0/0.6)] md:p-10"
             >
-              {/* Inner-eyebrow card — telemetry tag that says "this is a live trace" */}
-              <div className="border-hairline mb-7 flex flex-col gap-3 border-b pb-5 md:flex-row md:items-center md:justify-between">
-                <div className="flex items-center gap-3">
-                  <span className="bg-accent/10 ring-accent/25 inline-flex items-center gap-2 rounded-full px-3 py-1 ring-1">
-                    <span className="relative inline-flex h-1.5 w-1.5">
-                      <span className="bg-accent/60 absolute inline-flex h-full w-full animate-ping rounded-full" />
-                      <span className="bg-accent relative inline-flex h-1.5 w-1.5 rounded-full" />
+              {/* Inner-eyebrow card — telemetry tag + inline legend so the
+                  reader knows what dot means what before scanning the tree. */}
+              <div className="border-hairline mb-7 flex flex-col gap-4 border-b pb-5">
+                <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+                  <div className="flex flex-wrap items-center gap-3">
+                    <span className="bg-accent/10 ring-accent/25 inline-flex items-center gap-2 rounded-full px-3 py-1 ring-1">
+                      <span className="relative inline-flex h-1.5 w-1.5">
+                        <span className="bg-accent/60 absolute inline-flex h-full w-full animate-ping rounded-full" />
+                        <span className="bg-accent relative inline-flex h-1.5 w-1.5 rounded-full" />
+                      </span>
+                      <span className="text-accent font-mono text-[9px] uppercase tracking-[0.22em]">
+                        Exploración B&amp;B
+                      </span>
                     </span>
-                    <span className="text-accent font-mono text-[9px] uppercase tracking-[0.22em]">
-                      Exploración B&amp;B
+                    <span className="text-ink-faint font-mono tnum text-[9px] uppercase tracking-[0.22em]">
+                      22,632 nodos · 600.96s · gap 0.385%
                     </span>
-                  </span>
-                  <span className="text-ink-faint font-mono tnum text-[9px] uppercase tracking-[0.22em]">
-                    22,632 nodos · 600.96s · gap 0.385%
+                  </div>
+                  <span className="text-ink-faint font-mono text-[9px] uppercase tracking-[0.22em]">
+                    Esquemático · top 25 nodos
                   </span>
                 </div>
-                <span className="text-ink-faint font-mono text-[9px] uppercase tracking-[0.22em]">
-                  Esquemático · top 25 nodos
-                </span>
+                {/* Inline mini-legend — qué significa cada marca antes de leer */}
+                <div className="flex flex-wrap items-center gap-x-5 gap-y-2">
+                  <span className="flex items-center gap-2">
+                    <span className="bg-ink inline-block h-2 w-2 rounded-full" />
+                    <span className="text-ink-soft font-mono text-[9px] tracking-[0.12em]">
+                      ramas que pueden mejorar
+                    </span>
+                  </span>
+                  <span className="flex items-center gap-2">
+                    <span className="border-ink-faint inline-block h-2 w-2 rounded-full border bg-transparent" />
+                    <span className="text-ink-soft font-mono text-[9px] tracking-[0.12em]">
+                      ramas descartadas
+                    </span>
+                  </span>
+                  <span className="flex items-center gap-2">
+                    <span className="bg-accent inline-block h-2 w-2 rounded-full" />
+                    <span className="text-ink-soft font-mono text-[9px] tracking-[0.12em]">
+                      mejor entera encontrada
+                    </span>
+                  </span>
+                </div>
               </div>
 
-              <BranchTree />
+              {/* Tree + lectura panel — 2-col on md+, stacked on sm */}
+              <div className="flex flex-col gap-6 md:flex-row md:items-start md:gap-8">
+                <div className="min-w-0 flex-1">
+                  <BranchTree />
+                </div>
 
-              {/* Footer legend — micro-glossary that mirrors the tree marks */}
-              <div className="border-hairline mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 border-t pt-5">
-                <span className="text-ink-faint font-mono text-[9px] uppercase tracking-[0.24em]">
-                  Leyenda
-                </span>
-                <span className="flex items-center gap-2">
-                  <span className="bg-ink inline-block h-2 w-2 rounded-full" />
-                  <span className="text-ink-soft font-mono text-[9px] uppercase tracking-[0.2em]">
-                    activo
-                  </span>
-                </span>
-                <span className="flex items-center gap-2">
-                  <span className="border-ink-faint inline-block h-2 w-2 rounded-full border bg-transparent" />
-                  <span className="text-ink-soft font-mono text-[9px] uppercase tracking-[0.2em]">
-                    podado
-                  </span>
-                </span>
-                <span className="flex items-center gap-2">
-                  <span className="bg-accent inline-block h-2 w-2 rounded-full" />
-                  <span className="text-ink-soft font-mono text-[9px] uppercase tracking-[0.2em]">
-                    mejor entera
-                  </span>
-                </span>
-                <span className="flex items-center gap-2">
-                  <span className="bg-warning relative inline-flex h-2 w-2 items-center justify-center rounded-full">
-                    <span className="text-cream font-mono text-[6px] leading-none">×</span>
-                  </span>
-                  <span className="text-ink-soft font-mono text-[9px] uppercase tracking-[0.2em]">
-                    abandonada
-                  </span>
-                </span>
+                <aside
+                  className="bg-cream/60 ring-hairline w-full flex-shrink-0 rounded-[1.25rem] p-5 ring-1 md:w-72 md:p-6"
+                  aria-label="Cómo leer el árbol Branch and Bound"
+                >
+                  <div className="text-accent font-mono text-[10px] uppercase tracking-[0.22em]">
+                    Lectura del árbol
+                  </div>
+                  <ol className="text-ink-soft mt-5 space-y-4 text-sm leading-relaxed">
+                    <li className="flex gap-3">
+                      <span className="text-accent font-mono tnum mt-0.5 text-[11px] font-semibold tracking-[0.04em]">
+                        01
+                      </span>
+                      <span>
+                        Resolvemos el <span className="font-mono">LP</span> relajado en cada
+                        nodo. Esa es la <em className="text-ink not-italic">cota inferior</em> de
+                        costo.
+                      </span>
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-accent font-mono tnum mt-0.5 text-[11px] font-semibold tracking-[0.04em]">
+                        02
+                      </span>
+                      <span>
+                        Si la solución es fraccional, ramificamos en{' '}
+                        <span className="font-mono">x</span><sub className="font-mono">j</sub>{' '}
+                        <span className="font-mono">= 0 / 1</span>.
+                      </span>
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-accent font-mono tnum mt-0.5 text-[11px] font-semibold tracking-[0.04em]">
+                        03
+                      </span>
+                      <span>
+                        Podamos toda rama cuya cota no pueda mejorar la mejor entera actual.
+                      </span>
+                    </li>
+                    <li className="flex gap-3">
+                      <span className="text-accent font-mono tnum mt-0.5 text-[11px] font-semibold tracking-[0.04em]">
+                        04
+                      </span>
+                      <span>
+                        Continuamos hasta agotar nodos o el presupuesto de tiempo.
+                      </span>
+                    </li>
+                  </ol>
+                  <div className="border-hairline mt-6 border-t pt-5">
+                    <div className="text-ink-faint font-mono text-[9px] uppercase tracking-[0.22em]">
+                      En esta corrida
+                    </div>
+                    <p className="text-ink-soft mt-3 text-[13px] leading-relaxed">
+                      <span className="tnum font-mono">22,632</span> nodos en{' '}
+                      <span className="tnum font-mono">600s</span>. Mejor entera{' '}
+                      <span className="text-accent tnum font-mono font-semibold">
+                        $49,988
+                      </span>{' '}
+                      <span className="text-ink-faint">(no certificada óptima).</span>
+                    </p>
+                  </div>
+                </aside>
               </div>
             </div>
           </div>

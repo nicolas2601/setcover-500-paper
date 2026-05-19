@@ -40,17 +40,17 @@ export function Modelo() {
     <section
       data-scene="03"
       aria-label="Capítulo 03 · Modelo matemático"
-      className="relative bg-cream py-32 md:py-40"
+      className="relative bg-cream py-24 sm:py-28 md:py-40"
     >
       {/* Eyebrow */}
-      <div className="mx-auto max-w-[1680px] px-8 md:px-16 xl:px-24">
-        <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">
+      <div className="mx-auto max-w-[1680px] px-5 sm:px-8 md:px-16 xl:px-24">
+        <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-faint md:text-[12px]">
           CAPÍTULO 03 · MODELO MATEMÁTICO
         </span>
       </div>
 
       {/* Heading + intro */}
-      <div className="mx-auto mt-10 grid max-w-[1680px] grid-cols-12 gap-x-6 px-8 md:mt-14 md:gap-x-8 md:px-16 xl:px-24">
+      <div className="mx-auto mt-10 grid max-w-[1680px] grid-cols-12 gap-x-6 px-5 sm:px-8 md:mt-14 md:gap-x-8 md:px-16 xl:px-24">
         <div className="col-span-12 md:col-start-1 md:col-span-10 lg:col-start-1 lg:col-span-9">
           <SplitReveal
             as="h2"
@@ -61,7 +61,7 @@ export function Modelo() {
             Una sola desigualdad, repetida 500 veces.
           </SplitReveal>
 
-          <div className="mt-8 max-w-[62ch] space-y-4 font-body text-base leading-[1.6] text-ink-soft md:text-[1.05rem]">
+          <div className="mt-8 max-w-[62ch] space-y-4 font-body text-base leading-[1.6] text-ink-soft md:text-[1.05rem] lg:text-lg">
             <p>
               El modelo es de los más limpios de la literatura. Una función objetivo lineal,
               quinientas restricciones de cobertura, y la condición de binariedad sobre las
@@ -75,19 +75,20 @@ export function Modelo() {
         </div>
       </div>
 
-      {/* Formula — centered, large, breathing */}
-      <div className="mx-auto mt-16 max-w-[1680px] px-8 md:mt-20 md:px-16 xl:px-24">
-        <div className="mx-auto max-w-5xl rounded-sm border border-hairline bg-paper px-6 py-12 md:px-12 md:py-16">
+      {/* Formula — centered, large, breathing.
+          Use a horizontal scroll wrapper on sm- so wide formulas don't break the layout. */}
+      <div className="mx-auto mt-12 max-w-[1680px] px-5 sm:px-8 md:mt-20 md:px-16 xl:px-24">
+        <div className="mx-auto max-w-5xl rounded-sm border border-hairline bg-paper px-4 py-8 sm:px-6 sm:py-12 md:px-12 md:py-16">
           <div
             ref={formulaRef}
             aria-label="Formulación PLE del problema Set Cover 500x500"
-            className="text-ink [&_.katex-display]:my-0 [&_.katex]:text-[clamp(1.05rem,1.7vw,1.5rem)]"
+            className="overflow-x-auto text-ink [&_.katex-display>.katex]:!whitespace-normal [&_.katex-display]:my-0 [&_.katex]:text-[clamp(0.95rem,4vw,1.5rem)]"
           />
         </div>
       </div>
 
       {/* Two-column explanation */}
-      <div className="mx-auto mt-16 grid max-w-[1680px] grid-cols-12 gap-x-6 gap-y-10 px-8 md:mt-20 md:gap-x-16 md:px-16 xl:px-24">
+      <div className="mx-auto mt-12 grid max-w-[1680px] grid-cols-12 gap-x-6 gap-y-10 px-5 sm:px-8 md:mt-20 md:gap-x-16 md:px-16 xl:px-24">
         <div className="col-span-12 md:col-start-1 md:col-span-5">
           <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">
             Variables
@@ -120,9 +121,9 @@ export function Modelo() {
       </div>
 
       {/* Footnote */}
-      <div className="mx-auto mt-16 max-w-[1680px] px-8 md:mt-20 md:px-16 xl:px-24">
+      <div className="mx-auto mt-12 max-w-[1680px] px-5 sm:px-8 md:mt-20 md:px-16 xl:px-24">
         <div className="mx-auto max-w-5xl border-t border-hairline pt-5">
-          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-faint">
+          <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-faint md:text-[12px]">
             LP relajada (cota inferior):{' '}
             <span className="tnum text-ink-soft">{formatMoney(exact.lpRelajada)}</span>
             {'   ·   '}

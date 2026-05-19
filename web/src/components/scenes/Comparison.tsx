@@ -166,35 +166,36 @@ export function Comparison() {
     <section
       data-scene="07"
       aria-label="Capítulo 07 · Comparación PLE vs GA"
-      className="bg-cream py-32 md:py-40"
+      className="bg-cream py-24 sm:py-28 md:py-40"
     >
-      <div className="mx-auto max-w-[1680px] px-8 md:px-16 xl:px-24">
-        <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">
+      <div className="mx-auto max-w-[1680px] px-5 sm:px-8 md:px-16 xl:px-24">
+        <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-faint md:text-[12px]">
           CAPÍTULO 07 · COMPARACIÓN
         </p>
 
         <SplitReveal
           as="h2"
-          className="mt-8 max-w-4xl font-display text-5xl leading-[0.95] text-ink md:text-7xl"
+          className="mt-8 max-w-4xl font-display text-[clamp(2.25rem,7vw,4.5rem)] leading-[0.95] text-ink md:text-7xl"
         >
           Dos métodos. Una respuesta práctica.
         </SplitReveal>
 
-        <p className="mt-8 max-w-2xl text-lg leading-relaxed text-ink-soft md:text-xl">
+        <p className="mt-6 max-w-2xl text-base leading-relaxed text-ink-soft sm:mt-8 sm:text-lg md:text-xl">
           La diferencia se ve mejor con baseline-zoom. En escala completa, ambos costos parecen
           idénticos. La verdad está en el delta.
         </p>
 
-        {/* Comparison table */}
-        <div className="mt-20 overflow-hidden rounded-[1.5rem] ring-1 ring-hairline bg-paper">
-          <div className="grid grid-cols-12 px-8 py-6 ring-1 ring-hairline">
-            <div className="col-span-4 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">
+        {/* Comparison table — stacked on sm-, horizontal grid on md+ */}
+        <div className="mt-14 overflow-hidden rounded-[1.25rem] ring-1 ring-hairline bg-paper sm:mt-20 md:rounded-[1.5rem]">
+          {/* Header — hidden on sm-, shown on md+ */}
+          <div className="hidden grid-cols-12 px-8 py-6 ring-1 ring-hairline md:grid">
+            <div className="col-span-4 font-mono text-[12px] uppercase tracking-[0.22em] text-ink-faint">
               Métrica
             </div>
-            <div className="col-span-4 font-mono text-[10px] uppercase tracking-[0.22em] text-ink">
+            <div className="col-span-4 font-mono text-[12px] uppercase tracking-[0.22em] text-ink">
               PLE · ILP (B&amp;B)
             </div>
-            <div className="col-span-4 font-mono text-[10px] uppercase tracking-[0.22em] text-accent">
+            <div className="col-span-4 font-mono text-[12px] uppercase tracking-[0.22em] text-accent">
               Algoritmo Genético
             </div>
           </div>
@@ -203,65 +204,93 @@ export function Comparison() {
             <div
               key={row.metric}
               className={cn(
-                'grid grid-cols-12 px-8 py-7 transition-colors duration-300',
+                'transition-colors duration-300',
                 i !== rows.length - 1 && 'ring-1 ring-hairline',
               )}
             >
-              <div className="col-span-4 self-center font-mono text-[11px] uppercase tracking-[0.18em] text-ink-faint">
-                {row.metric}
+              {/* Mobile stacked card */}
+              <div className="flex flex-col gap-4 px-6 py-6 sm:px-8 md:hidden">
+                <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-faint">
+                  {row.metric}
+                </span>
+                <div className="grid grid-cols-2 gap-4">
+                  <div>
+                    <span className="block font-mono text-[10px] uppercase tracking-[0.18em] text-ink-faint">
+                      PLE · ILP
+                    </span>
+                    <span className="mt-1 block font-display tnum text-2xl leading-tight text-ink">
+                      {row.ple}
+                    </span>
+                  </div>
+                  <div>
+                    <span className="block font-mono text-[10px] uppercase tracking-[0.18em] text-accent">
+                      GA
+                    </span>
+                    <span className="mt-1 block font-display tnum text-2xl leading-tight text-accent">
+                      {row.gaValue}
+                    </span>
+                  </div>
+                </div>
               </div>
-              <div className="col-span-4 self-center font-display tnum text-2xl text-ink md:text-3xl">
-                {row.ple}
-              </div>
-              <div className="col-span-4 self-center font-display tnum text-2xl text-accent md:text-3xl">
-                {row.gaValue}
+
+              {/* Desktop row */}
+              <div className="hidden grid-cols-12 px-8 py-7 md:grid">
+                <div className="col-span-4 self-center font-mono text-[12px] uppercase tracking-[0.18em] text-ink-faint">
+                  {row.metric}
+                </div>
+                <div className="col-span-4 self-center font-display tnum text-2xl text-ink md:text-3xl">
+                  {row.ple}
+                </div>
+                <div className="col-span-4 self-center font-display tnum text-2xl text-accent md:text-3xl">
+                  {row.gaValue}
+                </div>
               </div>
             </div>
           ))}
         </div>
 
         {/* Baseline-zoom bar chart */}
-        <div className="mt-24 grid grid-cols-12 gap-8">
+        <div className="mt-16 grid grid-cols-12 gap-8 sm:mt-20 md:mt-24">
           <div className="col-span-12 md:col-span-7">
-            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">
+            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-faint md:text-[12px]">
               Costo · baseline-zoom desde {formatMoney(BASE)}
             </p>
 
             <div
               ref={chartRef}
-              className="mt-6 rounded-[1.5rem] ring-1 ring-hairline bg-paper p-8"
+              className="mt-6 rounded-[1.25rem] ring-1 ring-hairline bg-paper p-5 sm:p-8 md:rounded-[1.5rem]"
             >
               <ChartBaselineZoom
                 pleHeightPct={pleHeightPct}
                 gaHeightPct={gaHeightPct}
               />
-              <div className="mt-6 flex items-center justify-between font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint tnum">
+              <div className="mt-6 flex items-center justify-between font-mono text-[11px] uppercase tracking-[0.22em] text-ink-faint tnum md:text-[12px]">
                 <span>{formatMoney(BASE)}</span>
                 <span>baseline</span>
                 <span>{formatMoney(TOP)}</span>
               </div>
             </div>
 
-            <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-faint">
+            <p className="mt-4 font-mono text-[11px] uppercase tracking-[0.18em] text-ink-faint md:text-[12px]">
               Eje Y truncado para revelar el delta real. No empieza en cero.
             </p>
           </div>
 
           {/* RIGHT — Speedup hero + 3 editorial explainer rows */}
           <div ref={speedupRef} className="col-span-12 md:col-span-5 md:pl-8">
-            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">
+            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-faint md:text-[12px]">
               Speedup
             </p>
             <div
               data-cmp-speedup
-              className="mt-6 font-display tnum text-[10rem] leading-[0.85] text-ink will-change-transform md:text-[14rem]"
+              className="mt-4 font-display tnum leading-[0.82] text-ink will-change-transform text-[clamp(8rem,16vw,16rem)]"
             >
               83×
             </div>
-            <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-soft">
+            <p className="mt-2 font-mono text-[12px] uppercase tracking-[0.22em] text-ink-soft md:text-[13px]">
               más rápido
             </p>
-            <p className="mt-8 max-w-sm text-base leading-relaxed text-ink-soft">
+            <p className="mt-8 max-w-sm text-base leading-relaxed text-ink-soft md:text-lg">
               El GA termina en {formatNumber(ga.tiempo, 2)} s. El PLE necesita 10 minutos completos
               y aún así no certifica el óptimo.
             </p>
@@ -270,7 +299,7 @@ export function Comparison() {
                 hairline divider above so they read as evidence, not chrome. */}
             <ul
               data-explainers
-              className="mt-12 space-y-3 border-t border-hairline pt-8"
+              className="mt-10 space-y-3 border-t border-hairline pt-8 md:mt-12"
               aria-label="Explicación de la diferencia entre PLE y GA"
             >
               {EXPLAINERS.map((ex) => (
@@ -278,18 +307,18 @@ export function Comparison() {
                   key={ex.eyebrow}
                   className="rounded-[1.1rem] ring-1 ring-hairline bg-paper/60 p-1"
                 >
-                  <div className="rounded-[calc(1.1rem-0.25rem)] bg-paper px-5 py-4">
-                    <div className="flex items-baseline justify-between gap-4">
-                      <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">
+                  <div className="rounded-[calc(1.1rem-0.25rem)] bg-paper px-5 py-5">
+                    <div className="flex flex-col gap-2 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4">
+                      <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-faint">
                         {ex.eyebrow}
                       </span>
-                      <span className="font-mono tnum text-[11px] text-ink-soft">
+                      <span className="font-display tnum text-2xl leading-none text-ink-soft md:text-3xl">
                         <span className="text-ink">{ex.ple}</span>
                         <span className="mx-2 text-ink-faint">·</span>
                         <span className="text-accent">{ex.ga}</span>
                       </span>
                     </div>
-                    <p className="mt-2 text-[13px] leading-relaxed text-ink-soft">
+                    <p className="mt-3 text-sm leading-relaxed text-ink-soft md:text-base">
                       {ex.note}
                     </p>
                   </div>
@@ -300,21 +329,21 @@ export function Comparison() {
         </div>
 
         {/* Delta callout */}
-        <div className="mt-16 rounded-[1.5rem] bg-surface px-8 py-10 ring-1 ring-hairline md:px-12 md:py-14">
+        <div className="mt-14 rounded-[1.25rem] bg-surface px-6 py-8 ring-1 ring-hairline sm:mt-16 sm:px-8 sm:py-10 md:rounded-[1.5rem] md:px-12 md:py-14">
           <div className="grid grid-cols-12 gap-6">
             <div className="col-span-12 md:col-span-3">
-              <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">
+              <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-faint md:text-[12px]">
                 Delta de costo
               </p>
-              <p className="mt-3 font-display tnum text-5xl text-ink md:text-6xl">
+              <p className="mt-3 font-display tnum text-5xl leading-[0.95] text-ink md:text-6xl xl:text-7xl">
                 +${formatNumber(diff)}
               </p>
-              <p className="mt-2 font-mono tnum text-sm text-ink-soft">
+              <p className="mt-2 font-mono tnum text-base text-ink-soft md:text-lg">
                 +{formatNumber(ga.gap, 2)} %
               </p>
             </div>
             <div className="col-span-12 md:col-span-9 md:pl-8">
-              <p className="font-display text-2xl leading-snug text-ink md:text-3xl">
+              <p className="font-display text-xl leading-snug text-ink sm:text-2xl md:text-3xl xl:text-4xl">
                 Para producción a escala, la elección es obvia. El PLE fija el techo de calidad; el
                 GA decide en segundos.
               </p>
@@ -385,10 +414,10 @@ function ChartBaselineZoom({
             />
             <text
               x={36}
-              y={y + 3}
+              y={y + 4}
               textAnchor="end"
               className="fill-ink-faint font-mono tnum"
-              fontSize={9}
+              fontSize={12}
               letterSpacing="0.16em"
             >
               ${formatNumber(cost / 1000, 1)}k
@@ -429,11 +458,11 @@ function ChartBaselineZoom({
       />
       <text
         x={pleX + barW / 2}
-        y={pleY - 14}
+        y={pleY - 16}
         textAnchor="middle"
-        className="fill-ink font-mono tnum"
-        fontSize={16}
-        fontWeight={600}
+        className="fill-ink font-display tnum"
+        fontSize={22}
+        fontWeight={500}
       >
         $49,988
       </text>
@@ -441,9 +470,10 @@ function ChartBaselineZoom({
         x={pleX + barW / 2}
         y={H - 14}
         textAnchor="middle"
-        className="fill-ink-faint font-mono"
-        fontSize={11}
+        className="fill-ink-faint font-mono uppercase"
+        fontSize={14}
         letterSpacing="0.18em"
+        fontWeight={600}
       >
         PLE · ILP
       </text>
@@ -460,11 +490,11 @@ function ChartBaselineZoom({
       />
       <text
         x={gaX + barW / 2}
-        y={gaY - 14}
+        y={gaY - 16}
         textAnchor="middle"
-        className="fill-accent font-mono tnum"
-        fontSize={16}
-        fontWeight={600}
+        className="fill-accent font-display tnum"
+        fontSize={22}
+        fontWeight={500}
       >
         $50,795
       </text>
@@ -472,9 +502,10 @@ function ChartBaselineZoom({
         x={gaX + barW / 2}
         y={H - 14}
         textAnchor="middle"
-        className="fill-ink-faint font-mono"
-        fontSize={11}
+        className="fill-ink-faint font-mono uppercase"
+        fontSize={14}
         letterSpacing="0.18em"
+        fontWeight={600}
       >
         GA
       </text>
@@ -512,42 +543,42 @@ function ChartBaselineZoom({
           mono sub-label "+$0,807 · gap" right below it. */}
       <g data-cmp-pill className="[transform-box:fill-box] [transform-origin:center]">
         <rect
-          x={pillCenterX - 86}
-          y={annotY - 26}
-          width={172}
-          height={30}
-          rx={15}
+          x={pillCenterX - 104}
+          y={annotY - 32}
+          width={208}
+          height={38}
+          rx={19}
           className="fill-paper stroke-ink"
-          strokeWidth={1}
+          strokeWidth={1.25}
         />
         <text
-          x={pillCenterX - 70}
-          y={annotY - 7}
+          x={pillCenterX - 84}
+          y={annotY - 8}
           className="fill-ink font-mono"
-          fontSize={13}
+          fontSize={18}
           fontWeight={600}
         >
           ↗
         </text>
         <text
-          x={pillCenterX + 10}
-          y={annotY - 7}
+          x={pillCenterX + 12}
+          y={annotY - 8}
           textAnchor="middle"
-          className="fill-ink font-mono tnum"
-          fontSize={12}
-          fontWeight={600}
+          className="fill-ink font-display tnum"
+          fontSize={18}
+          fontWeight={500}
         >
           +$807 · +1.61 %
         </text>
         <text
           x={pillCenterX}
-          y={annotY + 18}
+          y={annotY + 24}
           textAnchor="middle"
           className="fill-ink-faint font-mono tnum uppercase"
-          fontSize={9}
+          fontSize={11}
           letterSpacing="0.22em"
         >
-          +$0,807 · gap
+          delta de costo
         </text>
       </g>
     </svg>

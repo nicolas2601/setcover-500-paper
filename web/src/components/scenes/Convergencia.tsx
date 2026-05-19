@@ -217,7 +217,7 @@ function ConvergenceChart({ scrubTriggerRef }: ChartProps) {
       ref={ref}
       viewBox={`0 0 ${VB_W} ${VB_H}`}
       preserveAspectRatio="xMidYMid meet"
-      className="h-auto w-full"
+      className="block h-full w-full"
       role="img"
       aria-label="Curva de convergencia del algoritmo genético"
     >
@@ -237,8 +237,8 @@ function ConvergenceChart({ scrubTriggerRef }: ChartProps) {
         </linearGradient>
       </defs>
 
-      {/* Soft vertical micro gridlines every 25 gens. Static, very faint —
-          they add information density without competing with the curve. */}
+      {/* Soft vertical micro gridlines every 25 gens. Static, faint but
+          slightly stronger than before so the reader can pin down the X. */}
       {X_MICRO_GRID.map((g) => {
         const x = scaleX(g);
         return (
@@ -253,7 +253,7 @@ function ConvergenceChart({ scrubTriggerRef }: ChartProps) {
             strokeWidth={1}
             strokeDasharray="1 6"
             className="stroke-hairline"
-            opacity={0.3}
+            opacity={0.45}
           />
         );
       })}
@@ -275,10 +275,10 @@ function ConvergenceChart({ scrubTriggerRef }: ChartProps) {
             />
             <text
               x={PAD_L - 14}
-              y={y + 4}
+              y={y + 5}
               textAnchor="end"
               className="fill-ink-faint font-mono uppercase"
-              fontSize={11}
+              fontSize={14}
               letterSpacing="0.18em"
             >
               ${formatNumber(v / 1000)}k
@@ -308,10 +308,10 @@ function ConvergenceChart({ scrubTriggerRef }: ChartProps) {
             ) : null}
             <text
               x={x}
-              y={VB_H - PAD_B + 28}
+              y={VB_H - PAD_B + 30}
               textAnchor="middle"
               className="fill-ink-faint font-mono uppercase"
-              fontSize={11}
+              fontSize={14}
               letterSpacing="0.18em"
             >
               gen {g}
@@ -319,11 +319,12 @@ function ConvergenceChart({ scrubTriggerRef }: ChartProps) {
             {isConverge ? (
               <text
                 x={x}
-                y={VB_H - PAD_B + 50}
+                y={VB_H - PAD_B + 56}
                 textAnchor="middle"
                 className="fill-accent font-mono uppercase"
-                fontSize={10}
+                fontSize={13}
                 letterSpacing="0.22em"
+                fontWeight={600}
               >
                 convergencia
               </text>
@@ -331,11 +332,12 @@ function ConvergenceChart({ scrubTriggerRef }: ChartProps) {
             {isStagnant ? (
               <text
                 x={x}
-                y={VB_H - PAD_B + 50}
+                y={VB_H - PAD_B + 56}
                 textAnchor="middle"
                 className="fill-ink-faint font-mono uppercase"
-                fontSize={10}
+                fontSize={13}
                 letterSpacing="0.22em"
+                fontWeight={600}
               >
                 estancamiento
               </text>
@@ -359,18 +361,20 @@ function ConvergenceChart({ scrubTriggerRef }: ChartProps) {
         x={PAD_L}
         y={PAD_T - 24}
         className="fill-ink-faint font-mono uppercase"
-        fontSize={11}
+        fontSize={14}
         letterSpacing="0.22em"
+        fontWeight={600}
       >
         Costo · COP
       </text>
       <text
         x={VB_W - PAD_R}
-        y={VB_H - 24}
+        y={VB_H - 22}
         textAnchor="end"
         className="fill-ink-faint font-mono uppercase"
-        fontSize={11}
+        fontSize={14}
         letterSpacing="0.22em"
+        fontWeight={600}
       >
         Generación
       </text>
@@ -442,19 +446,20 @@ function ConvergenceChart({ scrubTriggerRef }: ChartProps) {
         <g data-conv-anno-text>
           <text
             x={cx + 96}
-            y={cy - 62}
-            className="fill-ink font-mono tnum"
-            fontSize={14}
-            fontWeight={600}
+            y={cy - 64}
+            className="fill-ink font-display tnum"
+            fontSize={22}
+            fontWeight={500}
           >
             {formatMoney(ga.costo)}
           </text>
           <text
             x={cx + 96}
-            y={cy - 46}
+            y={cy - 44}
             className="fill-ink-faint font-mono uppercase"
-            fontSize={10}
+            fontSize={12}
             letterSpacing="0.22em"
+            fontWeight={600}
           >
             mínimo del GA
           </text>
@@ -465,9 +470,10 @@ function ConvergenceChart({ scrubTriggerRef }: ChartProps) {
         <text
           x={scaleX(8)}
           y={scaleY(74000)}
-          className="fill-ink-faint font-mono uppercase"
-          fontSize={10}
-          letterSpacing="0.22em"
+          className="fill-ink font-mono uppercase"
+          fontSize={14}
+          letterSpacing="0.18em"
+          fontWeight={600}
         >
           descenso rápido
         </text>
@@ -477,23 +483,23 @@ function ConvergenceChart({ scrubTriggerRef }: ChartProps) {
         <text
           x={scaleX(130)}
           y={scaleY(51400)}
-          className="fill-ink-faint font-mono uppercase"
-          fontSize={10}
-          letterSpacing="0.22em"
+          className="fill-ink font-mono uppercase"
+          fontSize={14}
+          letterSpacing="0.18em"
+          fontWeight={600}
         >
           meseta · sin mejora
         </text>
       </g>
 
-      {/* Three editorial micro-annotations — they add narrative density
-          without competing with the curve. Mono uppercase 8 px text-ink-faint. */}
+      {/* Three editorial micro-annotations — narrative density. */}
       <g data-conv-anno="gen-zero">
         <text
           x={scaleX(0) + 6}
           y={scaleY(78420) - 14}
           className="fill-ink-faint font-mono uppercase tnum"
-          fontSize={8}
-          letterSpacing="0.22em"
+          fontSize={12}
+          letterSpacing="0.18em"
         >
           ↑ generación 0 · pob. aleatoria · costo ≈ $78.4k
         </text>
@@ -504,8 +510,8 @@ function ConvergenceChart({ scrubTriggerRef }: ChartProps) {
           x={scaleX(35)}
           y={scaleY(60100) - 12}
           className="fill-ink-faint font-mono uppercase tnum"
-          fontSize={8}
-          letterSpacing="0.22em"
+          fontSize={12}
+          letterSpacing="0.18em"
         >
           ↘ ~70% del trabajo en las primeras 50 gens
         </text>
@@ -514,10 +520,10 @@ function ConvergenceChart({ scrubTriggerRef }: ChartProps) {
       <g data-conv-anno="afterconv">
         <text
           x={scaleX(110)}
-          y={scaleY(50795) + 22}
+          y={scaleY(50795) + 24}
           className="fill-ink-faint font-mono uppercase tnum"
-          fontSize={8}
-          letterSpacing="0.22em"
+          fontSize={12}
+          letterSpacing="0.18em"
         >
           → después del gen 95 nada cambia
         </text>
@@ -534,14 +540,14 @@ export function Convergencia() {
       ref={sectionRef}
       data-scene="06"
       aria-label="Capítulo 06 · Convergencia"
-      className="bg-cream relative py-32 md:py-40"
+      className="bg-cream relative py-24 sm:py-28 md:py-40"
     >
-      <div className="mx-auto max-w-[1680px] px-8 md:px-16 xl:px-24">
-        <div className="text-ink-faint font-mono text-[10px] uppercase tracking-[0.22em]">
+      <div className="mx-auto max-w-[1680px] px-5 sm:px-8 md:px-16 xl:px-24">
+        <div className="text-ink-faint font-mono text-[11px] uppercase tracking-[0.22em] md:text-[12px]">
           CAPÍTULO 06 · CONVERGENCIA
         </div>
 
-        <div className="mt-12 grid grid-cols-12 gap-8 md:gap-12">
+        <div className="mt-10 grid grid-cols-12 gap-6 sm:gap-8 md:mt-12 md:gap-12">
           <div className="col-span-12 md:col-span-7">
             <SplitReveal
               as="h2"
@@ -551,51 +557,54 @@ export function Convergencia() {
             </SplitReveal>
           </div>
           <div className="col-span-12 md:col-span-5">
-            <p className="text-ink-soft mt-2 text-[15px] leading-relaxed md:text-base">
+            <p className="text-ink-soft mt-2 max-w-[60ch] text-base leading-relaxed md:text-lg">
               El GA hace la mayor parte del trabajo en las primeras 95 generaciones. Después
               solo pule. A los 175 estanca y devuelve.
             </p>
           </div>
         </div>
 
-        <div className="bg-paper ring-hairline mt-16 rounded-[1.75rem] p-6 ring-1 md:p-10">
-          <div className="text-ink-faint font-mono mb-2 flex items-center justify-between text-[10px] uppercase tracking-[0.22em]">
+        {/* Chart container — responsive aspect ratio: shorter on mobile, taller on desktop. */}
+        <div className="bg-paper ring-hairline mt-12 rounded-[1.25rem] p-4 ring-1 sm:p-6 md:mt-16 md:rounded-[1.75rem] md:p-10">
+          <div className="text-ink-faint font-mono mb-3 flex items-center justify-between text-[11px] uppercase tracking-[0.22em] md:text-[12px]">
             <span>Mejor fitness vs generación</span>
             <span className="tnum">seed {ga.hp.semilla}</span>
           </div>
-          <ConvergenceChart scrubTriggerRef={sectionRef} />
+          <div className="aspect-[16/12] w-full sm:aspect-[16/10] md:aspect-[16/9] xl:aspect-[16/8]">
+            <ConvergenceChart scrubTriggerRef={sectionRef} />
+          </div>
         </div>
 
-        <dl className="border-hairline mt-12 grid grid-cols-2 gap-y-6 border-t pt-8 md:grid-cols-4">
+        <dl className="border-hairline mt-10 grid grid-cols-2 gap-y-8 border-t pt-8 sm:gap-x-6 md:mt-14 md:grid-cols-4">
           <div>
-            <dt className="text-ink-faint font-mono text-[10px] uppercase tracking-[0.22em]">
-              Generación de convergencia
+            <dt className="text-ink-faint font-mono text-[11px] uppercase tracking-[0.22em] md:text-[12px]">
+              Convergencia
             </dt>
-            <dd className="font-display tnum text-ink mt-2 text-2xl md:text-3xl">
+            <dd className="font-display tnum text-ink mt-3 text-3xl leading-none md:text-4xl xl:text-5xl">
               {ga.hp.convergencia}
             </dd>
           </div>
           <div>
-            <dt className="text-ink-faint font-mono text-[10px] uppercase tracking-[0.22em]">
+            <dt className="text-ink-faint font-mono text-[11px] uppercase tracking-[0.22em] md:text-[12px]">
               Semilla
             </dt>
-            <dd className="font-display tnum text-ink mt-2 text-2xl md:text-3xl">
+            <dd className="font-display tnum text-ink mt-3 text-3xl leading-none md:text-4xl xl:text-5xl">
               {ga.hp.semilla}
             </dd>
           </div>
           <div>
-            <dt className="text-ink-faint font-mono text-[10px] uppercase tracking-[0.22em]">
+            <dt className="text-ink-faint font-mono text-[11px] uppercase tracking-[0.22em] md:text-[12px]">
               Tiempo
             </dt>
-            <dd className="font-display tnum text-ink mt-2 text-2xl md:text-3xl">
+            <dd className="font-display tnum text-ink mt-3 text-3xl leading-none md:text-4xl xl:text-5xl">
               {formatNumber(ga.tiempo, 2)}s
             </dd>
           </div>
           <div>
-            <dt className="text-ink-faint font-mono text-[10px] uppercase tracking-[0.22em]">
+            <dt className="text-ink-faint font-mono text-[11px] uppercase tracking-[0.22em] md:text-[12px]">
               Población
             </dt>
-            <dd className="font-display tnum text-ink mt-2 text-2xl md:text-3xl">
+            <dd className="font-display tnum text-ink mt-3 text-3xl leading-none md:text-4xl xl:text-5xl">
               {ga.hp.poblacion}
             </dd>
           </div>

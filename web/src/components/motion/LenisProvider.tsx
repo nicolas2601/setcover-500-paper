@@ -11,7 +11,9 @@ if (typeof window !== 'undefined') {
 
 export function LenisProvider({ children }: { children: React.ReactNode }) {
   useEffect(() => {
-    const update = (time: number) => ScrollTrigger.update(time);
+    // gsap.ticker passes (time, deltaTime, frame, elapsed). ScrollTrigger.update
+    // signature is parameterless — wrap so the type-narrowed call stays clean.
+    const update = () => ScrollTrigger.update();
     gsap.ticker.add(update);
     gsap.ticker.lagSmoothing(0);
     return () => {

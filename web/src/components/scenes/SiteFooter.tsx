@@ -21,26 +21,26 @@ export function SiteFooter() {
     >
       <Marquee />
 
-      <div className="mx-auto max-w-[1680px] px-8 py-24 md:px-16 md:py-32 xl:px-24">
-        <div className="grid grid-cols-12 gap-10">
+      <div className="mx-auto max-w-[1680px] px-5 py-20 sm:px-8 sm:py-24 md:px-16 md:py-32 xl:px-24">
+        <div className="grid grid-cols-12 gap-10 sm:gap-8 md:gap-10">
           {/* Autores */}
-          <div className="col-span-12 md:col-span-3">
-            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-cream/50">
+          <div className="col-span-12 sm:col-span-6 md:col-span-3">
+            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-cream/50 md:text-[12px]">
               Autores
             </p>
             <ul className="mt-6 space-y-3">
               {meta.autores.map((a) => (
-                <li key={a} className="font-display text-2xl leading-tight text-cream">
+                <li key={a} className="font-display text-2xl leading-tight text-cream md:text-3xl">
                   {a}
                 </li>
               ))}
             </ul>
-            <p className="mt-6 text-sm text-cream/60">UNAB · Bucaramanga</p>
+            <p className="mt-6 text-sm text-cream/60 md:text-base">UNAB · Bucaramanga</p>
           </div>
 
           {/* Proyecto */}
-          <div className="col-span-12 md:col-span-3">
-            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-cream/50">
+          <div className="col-span-12 sm:col-span-6 md:col-span-3">
+            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-cream/50 md:text-[12px]">
               Proyecto
             </p>
             <ul className="mt-6 space-y-3 text-base">
@@ -93,23 +93,23 @@ export function SiteFooter() {
           </div>
 
           {/* Materia */}
-          <div className="col-span-12 md:col-span-3">
-            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-cream/50">
+          <div className="col-span-12 sm:col-span-6 md:col-span-3">
+            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-cream/50 md:text-[12px]">
               Materia
             </p>
-            <p className="mt-6 font-display text-2xl leading-tight text-cream">
+            <p className="mt-6 font-display text-2xl leading-tight text-cream md:text-3xl">
               Investigación de Operaciones
             </p>
-            <p className="mt-3 font-mono tnum text-sm text-cream/60">2026 · semestre I</p>
-            <p className="mt-3 text-sm text-cream/60">Programación lineal entera. Heurísticas.</p>
+            <p className="mt-3 font-mono tnum text-sm text-cream/60 md:text-base">2026 · semestre I</p>
+            <p className="mt-3 text-sm text-cream/60 md:text-base">Programación lineal entera. Heurísticas.</p>
           </div>
 
           {/* Colofón */}
-          <div className="col-span-12 md:col-span-3">
-            <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-cream/50">
+          <div className="col-span-12 sm:col-span-6 md:col-span-3">
+            <p className="font-mono text-[11px] uppercase tracking-[0.22em] text-cream/50 md:text-[12px]">
               Colofón
             </p>
-            <ul className="mt-6 space-y-2 text-sm text-cream/60">
+            <ul className="mt-6 space-y-2 text-sm text-cream/60 md:text-base">
               <li>Fraunces · titulares</li>
               <li>Geist Sans · cuerpo</li>
               <li>Geist Mono · datos</li>
@@ -123,11 +123,11 @@ export function SiteFooter() {
 
       {/* Bottom strip */}
       <div className="ring-1 ring-cream/10">
-        <div className="mx-auto flex max-w-[1680px] items-center justify-between px-8 py-8 md:px-16 xl:px-24">
-          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-cream/60">
+        <div className="mx-auto flex max-w-[1680px] flex-col items-start justify-between gap-2 px-5 py-6 sm:flex-row sm:items-center sm:gap-0 sm:px-8 sm:py-8 md:px-16 xl:px-24">
+          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-cream/60 sm:text-[11px]">
             © 2026 NICOLÁS MORENO &amp; JULIAN ARTEAGA · UNAB
           </p>
-          <p className="hidden font-mono text-[10px] uppercase tracking-[0.22em] text-cream/40 md:block">
+          <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-cream/40 sm:text-[11px]">
             SET COVER · 500×500
           </p>
         </div>

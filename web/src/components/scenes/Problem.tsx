@@ -190,16 +190,16 @@ export function Problem() {
       ref={sectionRef}
       data-scene="02"
       aria-label="Capítulo 02 · El problema"
-      className="relative bg-cream py-32 md:py-40"
+      className="relative bg-cream py-24 sm:py-28 md:py-40"
     >
       {/* Eyebrow */}
-      <div className="mx-auto max-w-[1680px] px-8 md:px-16 xl:px-24">
-        <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">
+      <div className="mx-auto max-w-[1680px] px-5 sm:px-8 md:px-16 xl:px-24">
+        <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-faint md:text-[12px]">
           CAPÍTULO 02 · EL PROBLEMA
         </span>
       </div>
 
-      <div className="mx-auto mt-10 grid max-w-[1680px] grid-cols-1 gap-x-6 px-8 md:mt-14 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-x-16 md:px-16 xl:px-24">
+      <div className="mx-auto mt-10 grid max-w-[1680px] grid-cols-1 gap-x-6 gap-y-12 px-5 sm:px-8 md:mt-14 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-x-12 md:gap-y-0 md:px-16 lg:gap-x-16 xl:px-24">
         {/* LEFT — Text column 5/12 */}
         <div>
           <SplitReveal
@@ -238,12 +238,12 @@ export function Problem() {
         </div>
 
         {/* RIGHT — Matrix viz 7/12 */}
-        <div className="mt-16 md:mt-0">
+        <div className="mt-4 md:mt-0">
           <figure>
             {/* Top axis label — j = 1 ────── j = 500 */}
             <div
               data-matrix-axis="top"
-              className="mb-3 flex items-center gap-3 px-1 font-mono text-[9px] uppercase tracking-[0.22em] text-ink-faint"
+              className="mb-3 flex items-center gap-3 px-1 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint md:text-[11px]"
             >
               <span className="tnum">j = 1</span>
               <span aria-hidden className="h-px flex-1 bg-hairline" />
@@ -255,14 +255,14 @@ export function Problem() {
               <div
                 data-matrix-axis="left"
                 aria-hidden
-                className="flex w-3 flex-col items-center justify-between font-mono text-[9px] uppercase tracking-[0.22em] text-ink-faint"
+                className="flex w-3 flex-col items-center justify-between font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint md:text-[11px]"
               >
                 <span className="tnum [writing-mode:vertical-rl] rotate-180">i = 1</span>
                 <span aria-hidden>↓</span>
                 <span className="tnum [writing-mode:vertical-rl] rotate-180">i = 500</span>
               </div>
 
-              <div className="relative aspect-square flex-1 rounded-sm border border-hairline bg-paper p-4 md:p-6">
+              <div className="relative aspect-square flex-1 rounded-sm border border-hairline bg-paper p-3 sm:p-4 md:p-6">
               <svg
                 ref={matrixSvgRef}
                 viewBox="0 0 500 500"
@@ -310,7 +310,7 @@ export function Problem() {
                   giving the chart its own "stamp" without breaking the grid */}
               <span
                 data-matrix-stamp
-                className="absolute bottom-2 right-3 font-mono text-[9px] uppercase tracking-[0.22em] text-ink-faint tnum"
+                className="absolute bottom-2 right-3 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint tnum md:text-[11px]"
               >
                 {problem.densidad}% densidad · {formatNumber(problem.unos)} unos
               </span>
@@ -318,7 +318,7 @@ export function Problem() {
             </div>
 
             <figcaption className="mt-4 flex flex-wrap items-center justify-between gap-3 px-1">
-              <div className="flex items-center gap-5 font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">
+              <div className="flex items-center gap-5 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-faint md:text-[12px]">
                 <span className="inline-flex items-center gap-2">
                   <span aria-hidden className="inline-block h-2.5 w-2.5 bg-ink" />
                   Cubre
@@ -328,7 +328,7 @@ export function Problem() {
                   No cubre
                 </span>
               </div>
-              <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">
+              <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint md:text-[11px]">
                 sub-muestra 60×60 · proyección 8.33× del original
               </span>
             </figcaption>
@@ -337,8 +337,8 @@ export function Problem() {
       </div>
 
       {/* Hairline divider with centered dot — soft transition into stats */}
-      <div className="mx-auto mt-20 max-w-[1680px] px-8 md:px-16 xl:px-24">
-        <div className="my-12 flex items-center gap-4">
+      <div className="mx-auto mt-16 max-w-[1680px] px-5 sm:mt-20 sm:px-8 md:px-16 xl:px-24">
+        <div className="my-10 flex items-center gap-4 md:my-12">
           <div aria-hidden className="h-px flex-1 bg-hairline" />
           <div aria-hidden className="h-1 w-1 rounded-full bg-ink" />
           <div aria-hidden className="h-px flex-1 bg-hairline" />
@@ -346,8 +346,8 @@ export function Problem() {
       </div>
 
       {/* Stats grid — 4 boxes with scrub-driven counters */}
-      <div className="mx-auto max-w-[1680px] px-8 md:px-16 xl:px-24">
-        <div className="grid grid-cols-2 gap-px overflow-hidden border border-hairline bg-hairline lg:grid-cols-4">
+      <div className="mx-auto max-w-[1680px] px-5 sm:px-8 md:px-16 xl:px-24">
+        <div className="grid grid-cols-1 gap-px overflow-hidden border border-hairline bg-hairline sm:grid-cols-2 lg:grid-cols-4">
           <StatCell
             label="Total unos"
             valueRef={(el) => { statRefs.current[0] = el; }}
@@ -411,17 +411,17 @@ type StatCellProps = {
 
 function StatCell({ label, valueRef, initial, hint }: StatCellProps) {
   return (
-    <div className="flex flex-col gap-2 bg-cream p-6 md:p-7">
-      <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">
+    <div className="flex flex-col gap-3 bg-cream p-6 sm:p-7 md:p-8">
+      <span className="font-mono text-[11px] uppercase tracking-[0.22em] text-ink-faint md:text-[12px]">
         {label}
       </span>
       <span
         ref={valueRef}
-        className="font-mono tnum text-[clamp(1.4rem,2.4vw,2rem)] font-light leading-none text-ink"
+        className="font-display tnum text-4xl font-normal leading-[0.95] text-ink md:text-5xl xl:text-6xl"
       >
         {initial}
       </span>
-      <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-faint">
+      <span className="font-mono text-[10px] uppercase tracking-[0.18em] text-ink-faint md:text-[11px]">
         {hint}
       </span>
     </div>

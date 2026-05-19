@@ -43,7 +43,7 @@ export const MagneticButton = forwardRef<HTMLButtonElement, Props>(
       <button
         ref={innerRef}
         className={cn(
-          'group relative inline-flex items-center gap-3 overflow-hidden rounded-full px-7 py-3.5',
+          'group relative inline-flex min-h-[44px] items-center gap-3 overflow-hidden rounded-full px-7 py-3.5',
           'bg-ink text-cream',
           'font-mono text-[11px] uppercase tracking-[0.22em]',
           'transition-[background] duration-300 ease-[var(--ease-apple)]',

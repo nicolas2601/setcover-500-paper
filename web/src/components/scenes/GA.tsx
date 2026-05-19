@@ -127,7 +127,8 @@ const HYPER: Row[] = [
 
 function StepVisual({ kind }: { kind: Step['visual'] }) {
   // Common: 200×120 viewbox, hairline strokes, accent for highlights.
-  const common = 'h-28 w-full text-ink/30 md:h-32';
+  // Bumped from text-ink/30 → text-ink/55 for stronger legibility.
+  const common = 'h-28 w-full text-ink/55 md:h-32';
   switch (kind) {
     case 'seed':
       // 6 small circles in a loose grid — population of solutions.
@@ -145,7 +146,7 @@ function StepVisual({ kind }: { kind: Step['visual'] }) {
                 cy={cy}
                 r={3.5}
                 fill="currentColor"
-                opacity={(i % 5) / 6 + 0.25}
+                opacity={(i % 5) / 6 + 0.5}
               />
             );
           })}
@@ -163,7 +164,7 @@ function StepVisual({ kind }: { kind: Step['visual'] }) {
               width={12}
               height={h}
               fill="currentColor"
-              opacity={0.4 + i * 0.05}
+              opacity={0.55 + i * 0.045}
             />
           ))}
         </svg>
@@ -172,20 +173,22 @@ function StepVisual({ kind }: { kind: Step['visual'] }) {
       // Two circles → one trophy-ish circle.
       return (
         <svg viewBox="0 0 200 120" className={common} aria-hidden>
-          <circle cx="40" cy="40" r="14" fill="none" stroke="currentColor" strokeWidth="1.2" />
-          <circle cx="40" cy="80" r="14" fill="none" stroke="currentColor" strokeWidth="1.2" />
-          <path d="M 60 60 L 130 60" stroke="currentColor" strokeWidth="1" strokeDasharray="3 3" />
-          <circle cx="160" cy="60" r="18" fill="none" stroke="currentColor" strokeWidth="1.4" />
-          <text
-            x="160"
-            y="65"
-            textAnchor="middle"
-            fontSize="11"
-            fontFamily="var(--font-mono)"
-            fill="currentColor"
-          >
-            ★
-          </text>
+          <circle cx="40" cy="40" r="14" fill="none" stroke="currentColor" strokeWidth="1.6" />
+          <circle cx="40" cy="80" r="14" fill="none" stroke="currentColor" strokeWidth="1.6" />
+          <path d="M 60 60 L 130 60" stroke="currentColor" strokeWidth="1.4" strokeDasharray="3 3" />
+          <g className="text-accent">
+            <circle cx="160" cy="60" r="18" fill="none" stroke="currentColor" strokeWidth="1.8" />
+            <text
+              x="160"
+              y="65"
+              textAnchor="middle"
+              fontSize="13"
+              fontFamily="var(--font-mono)"
+              fill="currentColor"
+            >
+              ★
+            </text>
+          </g>
         </svg>
       );
     case 'cross':
@@ -202,8 +205,8 @@ function StepVisual({ kind }: { kind: Step['visual'] }) {
               height={9}
               fill={b ? 'currentColor' : 'none'}
               stroke="currentColor"
-              strokeWidth="0.8"
-              opacity={0.6}
+              strokeWidth="1"
+              opacity={0.85}
             />
           ))}
           {/* Parent B row */}
@@ -216,11 +219,11 @@ function StepVisual({ kind }: { kind: Step['visual'] }) {
               height={9}
               fill={b ? 'currentColor' : 'none'}
               stroke="currentColor"
-              strokeWidth="0.8"
-              opacity={0.6}
+              strokeWidth="1"
+              opacity={0.85}
             />
           ))}
-          {/* Child row (uniform mix) */}
+          {/* Child row (uniform mix) — accent highlight */}
           {[1, 1, 1, 0, 1, 1, 1, 0].map((b, i) => (
             <rect
               key={`c${i}`}
@@ -230,8 +233,9 @@ function StepVisual({ kind }: { kind: Step['visual'] }) {
               height={9}
               fill={b ? 'currentColor' : 'none'}
               stroke="currentColor"
-              strokeWidth="1.1"
-              opacity={0.95}
+              strokeWidth="1.3"
+              opacity={1}
+              className="text-accent"
             />
           ))}
         </svg>
@@ -249,16 +253,16 @@ function StepVisual({ kind }: { kind: Step['visual'] }) {
               height={11}
               fill={b ? 'currentColor' : 'none'}
               stroke="currentColor"
-              strokeWidth={i === 5 ? '1.6' : '0.8'}
+              strokeWidth={i === 5 ? '1.8' : '1'}
               className={i === 5 ? 'text-accent' : ''}
-              opacity={i === 5 ? 1 : 0.55}
+              opacity={i === 5 ? 1 : 0.8}
             />
           ))}
           <text
             x={12 + 5 * 14 + 5.5}
             y={42}
             textAnchor="middle"
-            fontSize="9"
+            fontSize="10"
             fontFamily="var(--font-mono)"
             className="text-accent"
             fill="currentColor"
@@ -274,7 +278,7 @@ function StepVisual({ kind }: { kind: Step['visual'] }) {
           {Array.from({ length: 24 }).map((_, i) => {
             const cx = 12 + (i % 8) * 24;
             const cy = 18 + Math.floor(i / 8) * 28;
-            return <circle key={i} cx={cx} cy={cy} r={2} fill="currentColor" opacity={0.25} />;
+            return <circle key={i} cx={cx} cy={cy} r={2} fill="currentColor" opacity={0.45} />;
           })}
           {[
             { cx: 50, cy: 60 },
@@ -282,7 +286,7 @@ function StepVisual({ kind }: { kind: Step['visual'] }) {
             { cx: 150, cy: 76 },
           ].map((p, i) => (
             <g key={i} className="text-accent">
-              <circle cx={p.cx} cy={p.cy} r={9} fill="none" stroke="currentColor" strokeWidth="1.2" />
+              <circle cx={p.cx} cy={p.cy} r={9} fill="none" stroke="currentColor" strokeWidth="1.6" />
               <circle cx={p.cx} cy={p.cy} r={3.5} fill="currentColor" />
             </g>
           ))}
@@ -296,18 +300,18 @@ function StepVisual({ kind }: { kind: Step['visual'] }) {
             d="M 8 30 L 30 38 L 52 50 L 74 64 L 96 78 L 118 86 L 140 90 L 162 91 L 184 91"
             fill="none"
             stroke="currentColor"
-            strokeWidth="1.2"
-            opacity={0.65}
+            strokeWidth="1.6"
+            opacity={0.85}
           />
           <path
             d="M 118 86 L 184 91"
             fill="none"
             stroke="currentColor"
-            strokeWidth="1.6"
+            strokeWidth="2"
             strokeDasharray="2 4"
             className="text-accent"
           />
-          <circle cx={184} cy={91} r={3.5} fill="currentColor" className="text-accent" />
+          <circle cx={184} cy={91} r={4} fill="currentColor" className="text-accent" />
         </svg>
       );
   }
@@ -364,11 +368,14 @@ function GAPanel({ step, index, total }: PanelProps) {
       }
 
       // ── Initial states ────────────────────────────────────────────────
-      gsap.set(num, { opacity: 0, scale: 0.92, yPercent: 6 });
-      gsap.set(title, { opacity: 0, yPercent: 30 });
-      gsap.set(body, { opacity: 0, y: 18 });
-      gsap.set(meta, { opacity: 0, y: 10 });
-      gsap.set(visual, { opacity: 0, y: 20 });
+      // Opacity floors: panel content NEVER drops below ~0.35-0.5 so even at
+      // scrub 0% the user sees a legible composition. The animation refines
+      // — it doesn't gate visibility.
+      gsap.set(num, { opacity: 0.35, scale: 0.92, yPercent: 6 });
+      gsap.set(title, { opacity: 0.5, yPercent: 30 });
+      gsap.set(body, { opacity: 0.4, y: 18 });
+      gsap.set(meta, { opacity: 0.4, y: 10 });
+      gsap.set(visual, { opacity: 0.4, y: 20 });
 
       // ── Entry timeline: pinned, scrubbed reveal of inner content ─────
       const tl = gsap.timeline({
@@ -393,10 +400,11 @@ function GAPanel({ step, index, total }: PanelProps) {
         .to(body, { opacity: 1, y: 0, ease: 'power3.out', duration: 0.5 }, 0.15)
         .to(visual, { opacity: 1, y: 0, ease: 'power3.out', duration: 0.5 }, 0.2)
         .to(meta, { opacity: 1, y: 0, ease: 'power3.out', duration: 0.45 }, 0.25)
-        // Sustained — slow drift inward, then begin the exit.
+        // Sustained — slow drift inward, then begin the soft exit.
+        // Exit floor: opacity 0.5 (not 0). The panel never goes invisible.
         .to(num, { scale: 1.02, ease: 'sine.inOut', duration: 0.4 }, 0.55)
-        .to([title, body, meta, visual], { opacity: 0, y: -14, ease: 'power3.in', duration: 0.4 }, 0.7)
-        .to(num, { opacity: 0, scale: 0.97, ease: 'power3.in', duration: 0.4 }, 0.72);
+        .to([title, body, meta, visual], { opacity: 0.5, y: -14, ease: 'power3.in', duration: 0.4 }, 0.7)
+        .to(num, { opacity: 0.5, scale: 0.97, ease: 'power3.in', duration: 0.4 }, 0.72);
 
       // ── Surprise 06 · Elitismo: orbit the 3 highlighted nodes while pinned
       if (step.visual === 'elite' && elitesRef.current) {
@@ -469,16 +477,22 @@ function GAPanel({ step, index, total }: PanelProps) {
       <span aria-hidden className="border-hairline absolute inset-x-0 top-0 border-t opacity-60" />
 
       <div className="mx-auto grid w-full max-w-[1680px] grid-cols-12 gap-6 px-8 py-24 md:gap-12 md:px-16 md:py-28 xl:px-24">
-        {/* Numerator column — huge editorial watermark */}
+        {/* Numerator column — huge editorial watermark with outline doppelganger */}
         <div className="relative col-span-12 md:col-span-5">
-          <div
-            ref={numRef}
-            className="font-display tnum text-accent/15 leading-[0.85] text-[clamp(8rem,18vw,16rem)] select-none"
-            aria-hidden
-          >
-            {step.n}
+          <div ref={numRef} className="relative leading-[0.85] select-none" aria-hidden>
+            {/* Outline doppelganger — behind the filled glyph for stroke weight */}
+            <span
+              aria-hidden
+              className="font-display tnum absolute inset-0 block font-semibold text-[clamp(12rem,24vw,22rem)] leading-[0.85] text-accent/45 [-webkit-text-stroke:1.5px_currentColor] [-webkit-text-fill-color:transparent] translate-x-[6px] translate-y-[6px]"
+            >
+              {step.n}
+            </span>
+            {/* Filled glyph — primary visible numeral */}
+            <span className="font-display tnum relative block font-semibold text-accent/40 text-[clamp(12rem,24vw,22rem)] leading-[0.85]">
+              {step.n}
+            </span>
           </div>
-          <div className="text-ink-faint font-mono mt-4 text-[10px] uppercase tracking-[0.22em] md:mt-6">
+          <div className="text-ink-soft font-mono mt-6 text-[11px] uppercase tracking-[0.22em] md:mt-8">
             ETAPA {index + 1} DE {total}
           </div>
         </div>
@@ -494,7 +508,7 @@ function GAPanel({ step, index, total }: PanelProps) {
 
           <p
             ref={bodyRef}
-            className="text-ink-soft mt-8 max-w-2xl text-lg leading-relaxed md:mt-10 md:text-xl"
+            className="text-ink mt-8 max-w-2xl text-xl leading-relaxed md:mt-10 md:text-2xl"
           >
             {step.body}
           </p>
@@ -502,18 +516,20 @@ function GAPanel({ step, index, total }: PanelProps) {
           {/* Visual aid + meta param sit side-by-side at the bottom */}
           <div ref={visualRef} className="mt-12 grid grid-cols-12 items-end gap-6 md:mt-16">
             <div className="col-span-12 md:col-span-7">
-              <div className="text-ink-faint font-mono mb-3 text-[10px] uppercase tracking-[0.22em]">
+              <div className="text-ink-soft font-mono mb-3 text-[12px] uppercase tracking-[0.22em]">
                 Esquema
               </div>
               <StepVisual kind={step.visual} />
             </div>
 
             <div ref={metaRef} className="col-span-12 md:col-span-5">
-              <div className="text-ink-faint font-mono mb-3 text-[10px] uppercase tracking-[0.22em]">
+              <div className="text-ink-soft font-mono mb-3 text-[12px] uppercase tracking-[0.22em]">
                 Parámetro
               </div>
-              <div className="font-mono tnum text-ink rounded-[1rem] bg-surface/60 px-4 py-3 text-sm md:text-base">
-                {step.meta}
+              <div className="bg-paper ring-hairline rounded-[1rem] px-5 py-4 ring-1">
+                <div className="font-display tnum text-ink text-2xl leading-none md:text-[1.75rem]">
+                  {step.meta}
+                </div>
               </div>
             </div>
           </div>
@@ -618,11 +634,11 @@ function GASideRail({ total }: { total: number }) {
         'data-[visible=true]:opacity-100 data-[visible=false]:opacity-0',
       )}
     >
-      <ol className="relative flex flex-col items-center gap-4">
-        {/* Hairline connector behind the dots */}
+      <ol className="relative flex flex-col items-center gap-5">
+        {/* Hairline connector behind the dots — thicker for visibility */}
         <span
           aria-hidden
-          className="bg-ink/15 absolute left-1/2 top-1 h-[calc(100%-0.5rem)] w-px -translate-x-1/2"
+          className="bg-ink/25 absolute left-1/2 top-1 h-[calc(100%-0.5rem)] w-[2px] -translate-x-1/2"
         />
         {Array.from({ length: total }).map((_, i) => (
           <li
@@ -631,21 +647,100 @@ function GASideRail({ total }: { total: number }) {
             data-state="pending"
             className="group relative z-10 flex items-center gap-3"
           >
-            <span className="font-mono tnum text-ink-faint w-6 text-right text-[9px] uppercase tracking-[0.18em] opacity-0 transition-opacity duration-300 group-data-[state=active]:opacity-100">
-              {String(i + 1).padStart(2, '0')}
+            <span className="font-mono tnum text-accent w-12 text-right text-[9px] uppercase tracking-[0.22em] opacity-0 transition-opacity duration-300 group-data-[state=active]:opacity-100">
+              STEP {String(i + 1).padStart(2, '0')}
             </span>
             <span
               className={cn(
-                'block rounded-full border transition-all duration-[400ms] ease-[cubic-bezier(0.32,0.72,0,1)]',
-                'border-ink/30 size-2',
-                'group-data-[state=done]:bg-ink group-data-[state=done]:border-ink',
-                'group-data-[state=active]:bg-accent group-data-[state=active]:border-accent group-data-[state=active]:size-3',
+                'bg-cream block rounded-full transition-all duration-[400ms] ease-[cubic-bezier(0.32,0.72,0,1)]',
+                'bg-ink/30 size-2.5',
+                'group-data-[state=done]:bg-ink',
+                'group-data-[state=active]:bg-accent group-data-[state=active]:size-4 group-data-[state=active]:ring-2 group-data-[state=active]:ring-accent/30 group-data-[state=active]:ring-offset-2 group-data-[state=active]:ring-offset-cream',
               )}
             />
           </li>
         ))}
       </ol>
     </aside>
+  );
+}
+
+/* ──────────────────────────────────────────────────────────────────────
+   Flow progress strip — horizontal "ETAPA 1 — 2 — 3 — ... — 7" inside the
+   intro band. Tracks which panel is currently active via data-active.
+   ────────────────────────────────────────────────────────────────────── */
+
+function GAFlowProgress({ total }: { total: number }) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useGSAP(
+    () => {
+      const root = ref.current;
+      if (!root) return;
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if (reduce) return;
+
+      const nodes = Array.from(root.querySelectorAll<HTMLLIElement>('[data-flow-step]'));
+      if (!nodes.length) return;
+
+      ScrollTrigger.create({
+        trigger: '[data-ga-flow]',
+        start: 'top bottom',
+        end: 'bottom top',
+        onUpdate: () => {
+          const panels = document.querySelectorAll<HTMLElement>('[data-ga-panel]');
+          let activeIndex = -1;
+          panels.forEach((p, i) => {
+            if (p.getAttribute('data-active') === 'true') activeIndex = i;
+          });
+          nodes.forEach((node, i) => {
+            node.setAttribute(
+              'data-state',
+              i === activeIndex ? 'active' : i < activeIndex ? 'done' : 'pending',
+            );
+          });
+        },
+      });
+    },
+    { scope: ref },
+  );
+
+  return (
+    <div ref={ref}>
+      <ol className="flex flex-wrap items-center gap-x-3 gap-y-3 md:gap-x-4">
+        {Array.from({ length: total }).map((_, i) => (
+          <li
+            key={i}
+            data-flow-step
+            data-state="pending"
+            className="group flex items-center gap-3"
+          >
+            <span
+              className={cn(
+                'inline-flex items-center justify-center rounded-full font-mono tnum text-[11px] font-medium uppercase tracking-[0.12em]',
+                'h-9 w-9 transition-all duration-[400ms] ease-[cubic-bezier(0.32,0.72,0,1)]',
+                'bg-paper ring-1 ring-hairline text-ink-soft',
+                'group-data-[state=done]:bg-ink/85 group-data-[state=done]:text-cream group-data-[state=done]:ring-ink/85',
+                'group-data-[state=active]:bg-accent group-data-[state=active]:text-cream group-data-[state=active]:ring-accent group-data-[state=active]:scale-110',
+              )}
+            >
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            {i < total - 1 ? (
+              <span
+                aria-hidden
+                className={cn(
+                  'block h-px w-6 md:w-10 transition-colors duration-[400ms]',
+                  'bg-ink/20',
+                  'group-data-[state=done]:bg-ink/60',
+                  'group-data-[state=active]:bg-accent/70',
+                )}
+              />
+            ) : null}
+          </li>
+        ))}
+      </ol>
+    </div>
   );
 }
 
@@ -684,13 +779,22 @@ export function GA() {
           </div>
         </div>
 
-        <div className="border-hairline mt-16 flex items-center justify-between border-t pt-6">
-          <span className="text-ink-faint font-mono text-[10px] uppercase tracking-[0.22em]">
-            Flujo del algoritmo
-          </span>
-          <span className="text-ink-faint font-mono text-[10px] uppercase tracking-[0.22em]">
-            7 etapas · scroll vertical
-          </span>
+        {/* Flow band — eyebrow + descriptive line + mini progress dots */}
+        <div className="border-hairline mt-16 border-t pt-8">
+          <div className="grid grid-cols-12 gap-6 md:gap-12">
+            <div className="col-span-12 md:col-span-4">
+              <div className="text-accent font-mono text-[11px] uppercase tracking-[0.26em]">
+                Flujo del algoritmo · 7 etapas
+              </div>
+              <p className="text-ink mt-4 text-[15px] leading-relaxed md:text-base">
+                Cada generación: evaluar fitness, seleccionar padres, cruzar, mutar, reparar,
+                conservar élite, parar si estancamos.
+              </p>
+            </div>
+            <div className="col-span-12 md:col-span-8">
+              <GAFlowProgress total={STEPS.length} />
+            </div>
+          </div>
         </div>
       </div>
 
