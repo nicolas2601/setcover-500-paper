@@ -43,7 +43,7 @@ export const MagneticButton = forwardRef<HTMLButtonElement, Props>(
       <button
         ref={innerRef}
         className={cn(
-          'group inline-flex items-center gap-3 rounded-full px-7 py-3.5',
+          'group relative inline-flex items-center gap-3 overflow-hidden rounded-full px-7 py-3.5',
           'bg-ink text-cream',
           'font-mono text-[11px] uppercase tracking-[0.22em]',
           'transition-[background] duration-300 ease-[var(--ease-apple)]',
@@ -52,7 +52,12 @@ export const MagneticButton = forwardRef<HTMLButtonElement, Props>(
         )}
         {...rest}
       >
-        {children}
+        {/* Shimmer pulse — expands from centre on hover, fades through opacity curve. */}
+        <span
+          aria-hidden
+          className="pointer-events-none absolute inset-0 -z-0 m-auto h-full w-full origin-center scale-0 rounded-full bg-accent/20 opacity-0 transition-[transform,opacity] duration-[800ms] ease-[var(--ease-expo)] group-hover:scale-150 group-hover:opacity-100 motion-reduce:hidden"
+        />
+        <span className="relative z-[1] inline-flex items-center gap-3">{children}</span>
       </button>
     );
   },

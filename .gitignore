@@ -45,6 +45,11 @@ bun.lockb
 # Next
 next-env.d.ts
 .vercel/
+tsconfig.tsbuildinfo
+**/tsconfig.tsbuildinfo
+
+# Original docx (copied from /home/nicolas/Descargas, not part of the repo)
+/Guion_Sustentacion_SetCover.docx
 
 # Test artifacts / local screenshots
 *.png

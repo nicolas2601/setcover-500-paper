@@ -3,6 +3,9 @@ import { Fraunces, Geist, Geist_Mono } from 'next/font/google';
 import { LenisProvider } from '@/components/motion/LenisProvider';
 import { NoiseOverlay } from '@/components/motion/NoiseOverlay';
 import { CursorBlob } from '@/components/motion/CursorBlob';
+import { PageProgress } from '@/components/motion/PageProgress';
+import { SceneNumber } from '@/components/motion/SceneNumber';
+import { CornerBrackets } from '@/components/motion/CornerBrackets';
 import './globals.css';
 
 const fraunces = Fraunces({
@@ -44,7 +47,17 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       className={`${fraunces.variable} ${geistSans.variable} ${geistMono.variable}`}
     >
       <body className="bg-cream text-ink antialiased">
+        {/* Skip link — keyboard-only, focusable. */}
+        <a
+          href="#main"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[90] focus:rounded-full focus:bg-ink focus:px-5 focus:py-3 focus:font-mono focus:text-[11px] focus:uppercase focus:tracking-[0.22em] focus:text-cream"
+        >
+          Saltar al contenido
+        </a>
         <LenisProvider>
+          <PageProgress />
+          <CornerBrackets />
+          <SceneNumber total={10} />
           {children}
           <NoiseOverlay />
           <CursorBlob />

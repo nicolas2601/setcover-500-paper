@@ -1,8 +1,16 @@
 'use client';
 
+import { useGSAP } from '@gsap/react';
+import { useRef } from 'react';
+import { gsap } from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SplitReveal } from '@/components/motion/SplitReveal';
 import { exact, ga } from '@/data/setcover';
 import { cn, formatMoney, formatNumber } from '@/lib/utils';
+
+if (typeof window !== 'undefined') {
+  gsap.registerPlugin(ScrollTrigger, useGSAP);
+}
 
 type Row = {
   metric: string;
@@ -36,10 +44,131 @@ const pleHeightPct = ((pleVal - BASE) / RANGE) * 100;
 const gaHeightPct = ((gaVal - BASE) / RANGE) * 100;
 const diff = gaVal - pleVal; // 807
 
+// Horizontal cost gridlines inside the chart — drawn as hairlines so the
+// reader can resolve the bar tops to dollar amounts at a glance.
+const COST_GRID = [49500, 50000, 50500, 51000] as const;
+
+type Explainer = {
+  eyebrow: string;
+  ple: string;
+  ga: string;
+  note: string;
+};
+
+const EXPLAINERS: Explainer[] = [
+  {
+    eyebrow: 'Cardinalidad',
+    ple: 'PLE 22',
+    ga: 'GA 23',
+    note: 'el GA usa 1 antena extra',
+  },
+  {
+    eyebrow: 'Tiempo',
+    ple: '600 s',
+    ga: '7.23 s',
+    note: 'GA es 83× más rápido',
+  },
+  {
+    eyebrow: 'Garantía',
+    ple: 'IntegerFeasible',
+    ga: 'sin certificación formal',
+    note: 'el PLE acota residual a 0.386 %',
+  },
+];
+
 export function Comparison() {
+  const chartRef = useRef<HTMLDivElement>(null);
+  const speedupRef = useRef<HTMLDivElement>(null);
+
+  // Bars + leaders — mini-scrub localized to the chart card. Bars scaleY 0→1
+  // with transform-origin: bottom, leaders fade in trailing the bars.
+  useGSAP(
+    () => {
+      const root = chartRef.current;
+      if (!root) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      const ctx = gsap.context(() => {
+        const bars = root.querySelectorAll<SVGRectElement>('[data-cmp-bar]');
+        const pill = root.querySelector<SVGGElement>('[data-cmp-pill]');
+        const leaders = root.querySelectorAll<SVGLineElement>('[data-cmp-leader]');
+
+        if (!bars.length) return;
+
+        gsap.set(bars, { scaleY: 0, transformOrigin: 'center bottom' });
+        gsap.set(leaders, { opacity: 0 });
+        if (pill) gsap.set(pill, { opacity: 0, scale: 0.6, transformOrigin: 'center center' });
+
+        const tl = gsap.timeline({
+          scrollTrigger: {
+            trigger: root,
+            start: 'top 70%',
+            end: 'top 30%',
+            scrub: 1,
+          },
+        });
+
+        tl.to(bars, {
+          scaleY: 1,
+          duration: 1.2,
+          ease: 'expo.out',
+          stagger: 0.2,
+        });
+        tl.to(leaders, { opacity: 1, duration: 0.6, ease: 'expo.out', stagger: 0.1 }, '-=0.3');
+
+        // Pill — pops in once with back.out after bars finish. Not scrubbed.
+        ScrollTrigger.create({
+          trigger: root,
+          start: 'top 35%',
+          once: true,
+          onEnter: () => {
+            if (pill) {
+              gsap.to(pill, {
+                opacity: 1,
+                scale: 1,
+                duration: 1.0,
+                ease: 'back.out(1.7)',
+              });
+            }
+          },
+        });
+      }, root);
+
+      return () => ctx.revert();
+    },
+    { scope: chartRef },
+  );
+
+  // 83× hero numeral — scale 0.92 → 1, opacity 0 → 1 with expo.out duration 1.6
+  useGSAP(
+    () => {
+      const node = speedupRef.current?.querySelector<HTMLElement>('[data-cmp-speedup]');
+      if (!node) return;
+      if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
+      gsap.set(node, { scale: 0.92, opacity: 0, transformOrigin: 'left center' });
+      gsap.to(node, {
+        scale: 1,
+        opacity: 1,
+        duration: 1.6,
+        ease: 'expo.out',
+        scrollTrigger: {
+          trigger: node,
+          start: 'top 80%',
+          once: true,
+        },
+      });
+    },
+    { scope: speedupRef },
+  );
+
   return (
-    <section className="bg-cream py-32 md:py-40">
-      <div className="mx-auto max-w-6xl px-6 md:px-10">
+    <section
+      data-scene="07"
+      aria-label="Capítulo 07 · Comparación PLE vs GA"
+      className="bg-cream py-32 md:py-40"
+    >
+      <div className="mx-auto max-w-[1680px] px-8 md:px-16 xl:px-24">
         <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">
           CAPÍTULO 07 · COMPARACIÓN
         </p>
@@ -98,7 +227,10 @@ export function Comparison() {
               Costo · baseline-zoom desde {formatMoney(BASE)}
             </p>
 
-            <div className="mt-6 rounded-[1.5rem] ring-1 ring-hairline bg-paper p-8">
+            <div
+              ref={chartRef}
+              className="mt-6 rounded-[1.5rem] ring-1 ring-hairline bg-paper p-8"
+            >
               <ChartBaselineZoom
                 pleHeightPct={pleHeightPct}
                 gaHeightPct={gaHeightPct}
@@ -115,11 +247,15 @@ export function Comparison() {
             </p>
           </div>
 
-          <div className="col-span-12 md:col-span-5 md:pl-8">
+          {/* RIGHT — Speedup hero + 3 editorial explainer rows */}
+          <div ref={speedupRef} className="col-span-12 md:col-span-5 md:pl-8">
             <p className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">
               Speedup
             </p>
-            <div className="mt-6 font-display tnum text-[10rem] leading-[0.85] text-ink md:text-[14rem]">
+            <div
+              data-cmp-speedup
+              className="mt-6 font-display tnum text-[10rem] leading-[0.85] text-ink will-change-transform md:text-[14rem]"
+            >
               83×
             </div>
             <p className="mt-2 font-mono text-[11px] uppercase tracking-[0.22em] text-ink-soft">
@@ -129,6 +265,37 @@ export function Comparison() {
               El GA termina en {formatNumber(ga.tiempo, 2)} s. El PLE necesita 10 minutos completos
               y aún así no certifica el óptimo.
             </p>
+
+            {/* 3 mini Doppelrand explainer cards — laid as a list with a
+                hairline divider above so they read as evidence, not chrome. */}
+            <ul
+              data-explainers
+              className="mt-12 space-y-3 border-t border-hairline pt-8"
+              aria-label="Explicación de la diferencia entre PLE y GA"
+            >
+              {EXPLAINERS.map((ex) => (
+                <li
+                  key={ex.eyebrow}
+                  className="rounded-[1.1rem] ring-1 ring-hairline bg-paper/60 p-1"
+                >
+                  <div className="rounded-[calc(1.1rem-0.25rem)] bg-paper px-5 py-4">
+                    <div className="flex items-baseline justify-between gap-4">
+                      <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">
+                        {ex.eyebrow}
+                      </span>
+                      <span className="font-mono tnum text-[11px] text-ink-soft">
+                        <span className="text-ink">{ex.ple}</span>
+                        <span className="mx-2 text-ink-faint">·</span>
+                        <span className="text-accent">{ex.ga}</span>
+                      </span>
+                    </div>
+                    <p className="mt-2 text-[13px] leading-relaxed text-ink-soft">
+                      {ex.note}
+                    </p>
+                  </div>
+                </li>
+              ))}
+            </ul>
           </div>
         </div>
 
@@ -166,12 +333,13 @@ function ChartBaselineZoom({
   pleHeightPct: number;
   gaHeightPct: number;
 }) {
-  // SVG viewBox: 600 wide × 360 tall. Bars occupy y in [40, 320]
+  // Taller chart for more drama — viewBox grew from 360 to 480
+  // (≈ h-[420px] → h-[560px] equivalence at the same width).
   const W = 600;
-  const H = 360;
-  const padTop = 40;
-  const padBottom = 40;
-  const usableH = H - padTop - padBottom; // 280
+  const H = 480;
+  const padTop = 56;
+  const padBottom = 48;
+  const usableH = H - padTop - padBottom; // 376
   const barW = 140;
   const pleX = 110;
   const gaX = 360;
@@ -181,8 +349,16 @@ function ChartBaselineZoom({
   const pleY = H - padBottom - pleH;
   const gaY = H - padBottom - gaH;
 
-  // Annotation line between bar tops
-  const annotY = Math.min(pleY, gaY) - 22;
+  // Map a cost in [BASE, TOP] to its Y inside the chart — used by the
+  // horizontal cost gridlines so the reader can resolve bar tops at a glance.
+  const yForCost = (cost: number) => {
+    const pct = (cost - BASE) / RANGE;
+    return H - padBottom - pct * usableH;
+  };
+
+  // Annotation line between bar tops — a bit higher so the pill breathes.
+  const annotY = Math.min(pleY, gaY) - 40;
+  const pillCenterX = (pleX + gaX + barW) / 2;
 
   return (
     <svg
@@ -191,19 +367,49 @@ function ChartBaselineZoom({
       role="img"
       aria-label="Comparación de costo entre PLE-ILP y Algoritmo Genético con baseline zoom"
     >
-      {/* Baseline gridline */}
+      <title>Comparación de costo PLE vs GA · baseline-zoom desde $49,000</title>
+      {/* Horizontal cost gridlines at $49.5k, $50k, $50.5k, $51k —
+          hairlines with mono labels to the left. Adds info density. */}
+      {COST_GRID.map((cost) => {
+        const y = yForCost(cost);
+        return (
+          <g key={`cgrid-${cost}`} data-cost-grid>
+            <line
+              x1={40}
+              x2={W - 18}
+              y1={y}
+              y2={y}
+              className="stroke-hairline"
+              strokeDasharray="2 6"
+              strokeWidth={1}
+            />
+            <text
+              x={36}
+              y={y + 3}
+              textAnchor="end"
+              className="fill-ink-faint font-mono tnum"
+              fontSize={9}
+              letterSpacing="0.16em"
+            >
+              ${formatNumber(cost / 1000, 1)}k
+            </text>
+          </g>
+        );
+      })}
+
+      {/* Baseline gridline (full ink) */}
       <line
         x1={40}
-        x2={W - 40}
+        x2={W - 18}
         y1={H - padBottom}
         y2={H - padBottom}
-        className="stroke-hairline"
+        className="stroke-ink"
         strokeWidth={1}
       />
       {/* Top gridline */}
       <line
         x1={40}
-        x2={W - 40}
+        x2={W - 18}
         y1={padTop}
         y2={padTop}
         className="stroke-hairline"
@@ -213,6 +419,7 @@ function ChartBaselineZoom({
 
       {/* PLE bar */}
       <rect
+        data-cmp-bar
         x={pleX}
         y={pleY}
         width={barW}
@@ -222,7 +429,7 @@ function ChartBaselineZoom({
       />
       <text
         x={pleX + barW / 2}
-        y={pleY - 12}
+        y={pleY - 14}
         textAnchor="middle"
         className="fill-ink font-mono tnum"
         fontSize={16}
@@ -232,7 +439,7 @@ function ChartBaselineZoom({
       </text>
       <text
         x={pleX + barW / 2}
-        y={H - 12}
+        y={H - 14}
         textAnchor="middle"
         className="fill-ink-faint font-mono"
         fontSize={11}
@@ -243,6 +450,7 @@ function ChartBaselineZoom({
 
       {/* GA bar */}
       <rect
+        data-cmp-bar
         x={gaX}
         y={gaY}
         width={barW}
@@ -252,7 +460,7 @@ function ChartBaselineZoom({
       />
       <text
         x={gaX + barW / 2}
-        y={gaY - 12}
+        y={gaY - 14}
         textAnchor="middle"
         className="fill-accent font-mono tnum"
         fontSize={16}
@@ -262,7 +470,7 @@ function ChartBaselineZoom({
       </text>
       <text
         x={gaX + barW / 2}
-        y={H - 12}
+        y={H - 14}
         textAnchor="middle"
         className="fill-ink-faint font-mono"
         fontSize={11}
@@ -271,8 +479,9 @@ function ChartBaselineZoom({
         GA
       </text>
 
-      {/* Annotation: connecting line + delta label */}
+      {/* Annotation: connecting verticals + editorial delta pill */}
       <line
+        data-cmp-leader
         x1={pleX + barW / 2}
         x2={pleX + barW / 2}
         y1={pleY - 4}
@@ -281,6 +490,7 @@ function ChartBaselineZoom({
         strokeWidth={1}
       />
       <line
+        data-cmp-leader
         x1={gaX + barW / 2}
         x2={gaX + barW / 2}
         y1={gaY - 4}
@@ -289,6 +499,7 @@ function ChartBaselineZoom({
         strokeWidth={1}
       />
       <line
+        data-cmp-leader
         x1={pleX + barW / 2}
         x2={gaX + barW / 2}
         y1={annotY}
@@ -296,25 +507,49 @@ function ChartBaselineZoom({
         className="stroke-ink-faint"
         strokeWidth={1}
       />
-      <rect
-        x={(pleX + gaX + barW) / 2 - 70}
-        y={annotY - 22}
-        width={140}
-        height={26}
-        rx={13}
-        className="fill-paper stroke-ink-faint"
-        strokeWidth={1}
-      />
-      <text
-        x={(pleX + gaX + barW) / 2}
-        y={annotY - 5}
-        textAnchor="middle"
-        className="fill-ink font-mono tnum"
-        fontSize={12}
-        fontWeight={600}
-      >
-        +$807 · +1.61%
-      </text>
+
+      {/* Editorial delta pill — wider, ink stroke, ↗ glyph inside,
+          mono sub-label "+$0,807 · gap" right below it. */}
+      <g data-cmp-pill className="[transform-box:fill-box] [transform-origin:center]">
+        <rect
+          x={pillCenterX - 86}
+          y={annotY - 26}
+          width={172}
+          height={30}
+          rx={15}
+          className="fill-paper stroke-ink"
+          strokeWidth={1}
+        />
+        <text
+          x={pillCenterX - 70}
+          y={annotY - 7}
+          className="fill-ink font-mono"
+          fontSize={13}
+          fontWeight={600}
+        >
+          ↗
+        </text>
+        <text
+          x={pillCenterX + 10}
+          y={annotY - 7}
+          textAnchor="middle"
+          className="fill-ink font-mono tnum"
+          fontSize={12}
+          fontWeight={600}
+        >
+          +$807 · +1.61 %
+        </text>
+        <text
+          x={pillCenterX}
+          y={annotY + 18}
+          textAnchor="middle"
+          className="fill-ink-faint font-mono tnum uppercase"
+          fontSize={9}
+          letterSpacing="0.22em"
+        >
+          +$0,807 · gap
+        </text>
+      </g>
     </svg>
   );
 }

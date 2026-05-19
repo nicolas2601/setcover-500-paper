@@ -6,16 +6,17 @@ export const ease = {
 } as const;
 
 export const stagger = {
-  chars: 0.018,
-  words: 0.05,
-  lines: 0.08,
-  cards: 0.1,
+  chars: 0.028,
+  words: 0.08,
+  lines: 0.14,
+  cards: 0.18,
 } as const;
 
 export const duration = {
-  micro: 0.2,
-  short: 0.4,
-  medium: 0.8,
-  long: 1.2,
-  hero: 1.6,
+  micro: 0.25,
+  short: 0.55,
+  medium: 1.1,
+  long: 1.8,
+  hero: 2.4,
+  ambient: 18,
 } as const;

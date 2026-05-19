@@ -37,17 +37,21 @@ export function Modelo() {
   }, []);
 
   return (
-    <section className="relative bg-cream py-32 md:py-40">
+    <section
+      data-scene="03"
+      aria-label="Capítulo 03 · Modelo matemático"
+      className="relative bg-cream py-32 md:py-40"
+    >
       {/* Eyebrow */}
-      <div className="px-6 md:px-12">
+      <div className="mx-auto max-w-[1680px] px-8 md:px-16 xl:px-24">
         <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">
           CAPÍTULO 03 · MODELO MATEMÁTICO
         </span>
       </div>
 
       {/* Heading + intro */}
-      <div className="mt-10 grid grid-cols-12 gap-x-6 px-6 md:mt-14 md:gap-x-8 md:px-12">
-        <div className="col-span-12 md:col-start-2 md:col-span-9 lg:col-start-2 lg:col-span-8">
+      <div className="mx-auto mt-10 grid max-w-[1680px] grid-cols-12 gap-x-6 px-8 md:mt-14 md:gap-x-8 md:px-16 xl:px-24">
+        <div className="col-span-12 md:col-start-1 md:col-span-10 lg:col-start-1 lg:col-span-9">
           <SplitReveal
             as="h2"
             by="words"
@@ -72,8 +76,8 @@ export function Modelo() {
       </div>
 
       {/* Formula — centered, large, breathing */}
-      <div className="mt-16 px-6 md:mt-20 md:px-12">
-        <div className="mx-auto max-w-4xl rounded-sm border border-hairline bg-paper px-6 py-12 md:px-12 md:py-16">
+      <div className="mx-auto mt-16 max-w-[1680px] px-8 md:mt-20 md:px-16 xl:px-24">
+        <div className="mx-auto max-w-5xl rounded-sm border border-hairline bg-paper px-6 py-12 md:px-12 md:py-16">
           <div
             ref={formulaRef}
             aria-label="Formulación PLE del problema Set Cover 500x500"
@@ -83,8 +87,8 @@ export function Modelo() {
       </div>
 
       {/* Two-column explanation */}
-      <div className="mt-16 grid grid-cols-12 gap-x-6 gap-y-10 px-6 md:mt-20 md:gap-x-8 md:px-12">
-        <div className="col-span-12 md:col-start-2 md:col-span-5">
+      <div className="mx-auto mt-16 grid max-w-[1680px] grid-cols-12 gap-x-6 gap-y-10 px-8 md:mt-20 md:gap-x-16 md:px-16 xl:px-24">
+        <div className="col-span-12 md:col-start-1 md:col-span-5">
           <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">
             Variables
           </span>
@@ -99,7 +103,7 @@ export function Modelo() {
           </p>
         </div>
 
-        <div className="col-span-12 md:col-start-7 md:col-span-5">
+        <div className="col-span-12 md:col-start-7 md:col-span-6">
           <span className="font-mono text-[10px] uppercase tracking-[0.22em] text-ink-faint">
             Restricciones
           </span>
@@ -116,8 +120,8 @@ export function Modelo() {
       </div>
 
       {/* Footnote */}
-      <div className="mt-16 px-6 md:mt-20 md:px-12">
-        <div className="mx-auto max-w-4xl border-t border-hairline pt-5">
+      <div className="mx-auto mt-16 max-w-[1680px] px-8 md:mt-20 md:px-16 xl:px-24">
+        <div className="mx-auto max-w-5xl border-t border-hairline pt-5">
           <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-ink-faint">
             LP relajada (cota inferior):{' '}
             <span className="tnum text-ink-soft">{formatMoney(exact.lpRelajada)}</span>
