@@ -105,8 +105,8 @@ export function Robustness() {
 
         {/* One-liner — plain-language wrap-up after all the numbers */}
         <p className="mt-14 max-w-3xl font-display text-xl leading-snug text-ink sm:mt-16 sm:text-2xl md:text-3xl xl:text-4xl">
-          El coeficiente de variación es {formatNumber(robustness.cv, 2)} %. En lenguaje plano: si
-          volvés a correr el GA, la respuesta apenas se mueve.
+          El coeficiente de variación es {formatNumber(robustness.cv, 2)} %. En lenguaje plano:
+          si se vuelve a correr el GA, la respuesta apenas se mueve.
         </p>
       </div>
     </section>

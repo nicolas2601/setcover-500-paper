@@ -72,7 +72,7 @@ const EXPLAINERS: Explainer[] = [
     eyebrow: 'Garantía',
     ple: 'IntegerFeasible',
     ga: 'sin certificación formal',
-    note: 'el PLE acota residual a 0.386 %',
+    note: 'el PLE acota la brecha a 0.386 %',
   },
 ];
 
@@ -291,8 +291,8 @@ export function Comparison() {
               más rápido
             </p>
             <p className="mt-8 max-w-sm text-base leading-relaxed text-ink-soft md:text-lg">
-              El GA termina en {formatNumber(ga.tiempo, 2)} s. El PLE necesita 10 minutos completos
-              y aún así no certifica el óptimo.
+              El GA termina en {formatNumber(ga.tiempo, 2)} s. El PLE necesita los 10 minutos
+              completos y aun así no garantiza el óptimo.
             </p>
 
             {/* 3 mini Doppelrand explainer cards — laid as a list with a

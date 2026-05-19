@@ -25,49 +25,49 @@ const STEPS: Step[] = [
   {
     n: '01',
     title: 'Inicialización',
-    body: 'Población de 150 cromosomas binarios. Cada cromosoma es un subconjunto S de antenas candidatas. Semilla controlada para reproducibilidad.',
+    body: 'Población inicial de 150 cromosomas binarios. Cada cromosoma representa un subconjunto S de antenas candidatas. La semilla queda fija para que el resultado sea reproducible.',
     meta: 'pop = 150',
     visual: 'seed',
   },
   {
     n: '02',
     title: 'Evaluación',
-    body: 'Función de fitness penalizada. Costo total de S más penalización por clientes no cubiertos. Empuja hacia soluciones factibles.',
+    body: 'Función de fitness penalizada: costo total de S más una multa por cada cliente sin cubrir. Empuja la búsqueda hacia soluciones factibles.',
     meta: 'fitness = Σc + λ · faltantes',
     visual: 'fitness',
   },
   {
     n: '03',
     title: 'Selección',
-    body: 'Torneo binario. Dos cromosomas al azar, gana el de menor fitness. Mantiene presión selectiva sin colapsar diversidad temprana.',
+    body: 'Torneo binario. Se enfrentan dos cromosomas al azar y gana el de menor fitness. Mantiene presión para mejorar sin perder diversidad al inicio.',
     meta: 'torneo k = 2',
     visual: 'select',
   },
   {
     n: '04',
     title: 'Cruce',
-    body: 'Recombinación uniforme con probabilidad alta. Cada gen se hereda del padre A o B con probabilidad equitativa cuando hay cruce.',
+    body: 'Recombinación uniforme con probabilidad 0.9. Cuando ocurre el cruce, cada gen del hijo se hereda del padre A o del padre B con la misma probabilidad.',
     meta: 'p_c = 0.9',
     visual: 'cross',
   },
   {
     n: '05',
     title: 'Mutación',
-    body: 'Bit-flip adaptativo. Empieza agresiva para explorar, decae para explotar. Cuida no perturbar al élite cuando el frente ya está pulido.',
+    body: 'Bit-flip adaptativo. Empieza alta para explorar el espacio y baja para refinar la mejor solución. No se aplica al élite, para no dañar el frente ya pulido.',
     meta: 'p_m: 3% → 0.5%',
     visual: 'mutate',
   },
   {
     n: '06',
     title: 'Elitismo',
-    body: 'Las tres mejores soluciones pasan intactas a la siguiente generación. Garantiza monotonía: la mejor fitness nunca empeora generación a generación.',
+    body: 'Las tres mejores soluciones pasan intactas a la siguiente generación, sin cruce ni mutación. Esto garantiza que el mejor costo nunca empeora entre generaciones.',
     meta: 'elite = 3',
     visual: 'elite',
   },
   {
     n: '07',
     title: 'Estancamiento',
-    body: 'Si la mejor solución no mejora durante 80 generaciones seguidas, el bucle termina. Ahorra evaluaciones cuando el frente ya está estable.',
+    body: 'Si la mejor solución no mejora durante 80 generaciones seguidas, el algoritmo se detiene. Ahorra evaluaciones cuando la búsqueda ya está estable.',
     meta: 'paciencia = 80 gens',
     visual: 'patience',
   },
@@ -767,14 +767,14 @@ export function GA() {
               as="h2"
               className="font-display text-ink text-[clamp(2rem,4.6vw,3.8rem)] font-medium leading-[1.04]"
             >
-              {`Una población. Cien y media de soluciones tentativas. Evolución hacia el mínimo.`}
+              {`Una población. Ciento cincuenta soluciones candidatas. Evolución hacia el costo mínimo.`}
             </SplitReveal>
           </div>
           <div className="col-span-12 md:col-span-4">
             <p className="text-ink-soft mt-2 text-[15px] leading-relaxed md:text-base">
-              El método metaheurístico no certifica optimalidad. A cambio explora el espacio
-              combinatorio en segundos, no en minutos. La pregunta no es si llega al óptimo:
-              es qué tan cerca llega y a qué costo.
+              El método metaheurístico no garantiza la solución óptima. A cambio, explora el
+              espacio combinatorio en segundos en lugar de minutos. La pregunta no es si llega
+              al óptimo: es qué tan cerca llega y a qué costo.
             </p>
           </div>
         </div>

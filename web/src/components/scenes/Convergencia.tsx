@@ -559,7 +559,7 @@ export function Convergencia() {
           <div className="col-span-12 md:col-span-5">
             <p className="text-ink-soft mt-2 max-w-[60ch] text-base leading-relaxed md:text-lg">
               El GA hace la mayor parte del trabajo en las primeras 95 generaciones. Después
-              solo pule. A los 175 estanca y devuelve.
+              solo refina. A los 175 detecta estancamiento y se detiene.
             </p>
           </div>
         </div>

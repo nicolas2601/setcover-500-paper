@@ -171,9 +171,9 @@ export function Hero() {
           </h1>
 
           <p className="mt-8 max-w-[58ch] font-body text-base leading-[1.55] text-ink-soft sm:mt-10 md:mt-12 md:text-lg xl:text-xl">
-            Un problema NP-difícil del paper de Karp resuelto con dos métodos opuestos:
+            Un problema NP-difícil del paper de Karp (1972), resuelto con dos métodos opuestos:
             Branch &amp; Bound exacto y un Algoritmo Genético.
-            La diferencia: 83 veces más rápido por solo 1.61% de gap.
+            El resultado: 83 veces más rápido a cambio de un costo apenas 1.61 % mayor.
           </p>
         </div>
 

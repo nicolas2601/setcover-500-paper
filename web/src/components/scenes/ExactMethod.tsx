@@ -888,22 +888,21 @@ export function ExactMethod() {
               as="h2"
               className="font-display text-ink text-[clamp(2rem,4.8vw,4.4rem)] font-medium leading-[1.02]"
             >
-              {`Diez minutos. Veintidós mil nodos. La mejor solución entera que MATLAB pudo certificar.`}
+              {`Diez minutos. Veintidós mil nodos. La mejor solución entera que MATLAB encontró antes de agotar el tiempo.`}
             </SplitReveal>
           </div>
 
           <div className="col-span-12 md:col-span-5 lg:col-span-4">
             <div className="text-ink-soft space-y-5 text-[15px] leading-relaxed md:text-base">
               <p>
-                MATLAB <span className="font-mono">intlinprog</span> ataca el problema con
-                Branch and Bound. Relaja la integralidad, resuelve el LP, ramifica sobre la
-                variable fraccional más prometedora y poda toda rama cuya cota supere la
-                mejor entera conocida.
+                MATLAB <span className="font-mono">intlinprog</span> resuelve el problema con
+                Branch and Bound. Relaja la condición de binariedad, resuelve el LP, ramifica
+                sobre la variable fraccionaria más prometedora y descarta toda rama cuya cota
+                inferior supere a la mejor entera ya encontrada.
               </p>
               <p>
                 Con un presupuesto de <span className="tnum font-mono">600s</span> el solver
-                exploró <span className="tnum font-mono">22,632</span> nodos. No probó
-                optimalidad. Devolvió la mejor solución entera vista.
+                exploró <span className="tnum font-mono">22,632</span> nodos.
               </p>
             </div>
 
@@ -1076,9 +1075,9 @@ export function ExactMethod() {
             Esto no es óptimo certificado.
           </p>
           <p className="text-ink-soft mt-4 max-w-3xl text-[14px] leading-relaxed md:text-[15px]">
-            El solver retornó <span className="font-mono">IntegerFeasible</span>: encontró
-            una solución entera buena pero no probó que sea la mejor posible dentro de los
-            10 minutos. Cualquier mejor solución estaría como máximo{' '}
+            El solver devolvió <span className="font-mono">IntegerFeasible</span>: encontró
+            una solución entera buena, pero no demostró que sea la mejor posible dentro de
+            los 10 minutos. Si existiera una mejor, estaría como máximo{' '}
             <span className="tnum font-mono">~$193</span> por debajo, según la cota dual
             residual.
           </p>
